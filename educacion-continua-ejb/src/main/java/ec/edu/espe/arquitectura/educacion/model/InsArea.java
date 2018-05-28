@@ -18,6 +18,7 @@ import javax.persistence.Table;
  *
  * @author js_cm
  */
+
 @Entity
 @Table(name = "ins_area")
 public class InsArea implements Serializable {

@@ -6,6 +6,7 @@
 package ec.edu.espe.arquitectura.educacion.dao;
 
 import ec.edu.espe.arquitectura.educacion.model.InsArea;
+import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -15,6 +16,8 @@ import javax.persistence.PersistenceContext;
  * @author js_cm
  */
 @Stateless
+@LocalBean
+
 public class InsAreaFacade extends AbstractFacade<InsArea> {
 
     @PersistenceContext(unitName = "educacion_continua-evaluacion_docente")

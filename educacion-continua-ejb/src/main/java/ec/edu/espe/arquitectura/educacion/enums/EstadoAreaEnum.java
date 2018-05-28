@@ -17,8 +17,8 @@ public enum EstadoAreaEnum {
     INA("INACTIVO"),
     OCU("OCUPADA"),
     DES("DESOCPADA");
-
-    String texto;
+    //ABI("ABIERTA");
+    private String texto;
 
     private EstadoAreaEnum(String texto) {
         this.texto = texto;
