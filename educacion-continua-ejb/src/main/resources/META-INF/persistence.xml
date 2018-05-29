@@ -1,44 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
   <persistence-unit name="educacion_continua-evaluacion_docente" transaction-type="JTA">
-    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-    <class>ec.edu.espe.arquitectura.educacion.model.InsCliente</class>
-    <class>ec.edu.espe.arquitectura.educacion.model.EvaPregunta</class>
-    <class>ec.edu.espe.arquitectura.educacion.model.InsClase</class>
-    <class>ec.edu.espe.arquitectura.educacion.model.SegRol</class>
-    <class>ec.edu.espe.arquitectura.educacion.model.SegRegistroAcceso</class>
-    <class>ec.edu.espe.arquitectura.educacion.model.InsFactura</class>
-    <class>ec.edu.espe.arquitectura.educacion.model.SegFuncionalidad</class>
-    <class>ec.edu.espe.arquitectura.educacion.model.InsPrograma</class>
-    <class>ec.edu.espe.arquitectura.educacion.model.InsPersona</class>
-    <class>ec.edu.espe.arquitectura.educacion.model.SegModulo</class>
-    <class>ec.edu.espe.arquitectura.educacion.model.EvaCuestionario</class>
-    <class>ec.edu.espe.arquitectura.educacion.model.InsHorario</class>
-    <class>ec.edu.espe.arquitectura.educacion.model.SegUsuario</class>
-    <class>ec.edu.espe.arquitectura.educacion.model.InsAula</class>
-    <class>ec.edu.espe.arquitectura.educacion.model.EvaRespuestaPregunta</class>
-    <class>ec.edu.espe.arquitectura.educacion.model.InsTema</class>
-    <class>ec.edu.espe.arquitectura.educacion.model.EvaDetalleEvaluacon</class>
-    <class>ec.edu.espe.arquitectura.educacion.model.EvaRespuestaCuestionario</class>
-    <class>ec.edu.espe.arquitectura.educacion.model.SegPerfilFuncionalidad</class>
-    <class>ec.edu.espe.arquitectura.educacion.model.InsMatricula</class>
-    <class>ec.edu.espe.arquitectura.educacion.model.InsPrerequisito</class>
-    <class>ec.edu.espe.arquitectura.educacion.model.InsArea</class>
-    <class>ec.edu.espe.arquitectura.educacion.model.EvaEvaluacion</class>
-    <class>ec.edu.espe.arquitectura.educacion.model.InsDetalleFactura</class>
-    <class>ec.edu.espe.arquitectura.educacion.model.InsCalificacion</class>
-    <class>ec.edu.espe.arquitectura.educacion.model.InsFacturaFormapago</class>
-    <class>ec.edu.espe.arquitectura.educacion.model.InsFranja</class>
-    <class>ec.edu.espe.arquitectura.educacion.model.EvaResultadoEvaluacion</class>
-    <class>ec.edu.espe.arquitectura.educacion.model.InsCurso</class>
-    <class>ec.edu.espe.arquitectura.educacion.model.SegPerfil</class>
-    <class>ec.edu.espe.arquitectura.educacion.model.InsProgramaCurso</class>
-    <exclude-unlisted-classes>false</exclude-unlisted-classes>
-    <properties>
-      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/educacion_continua?zeroDateTimeBehavior=convertToNull"/>
-      <property name="javax.persistence.jdbc.user" value="root"/>
-      <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-      <property name="javax.persistence.jdbc.password" value="lalala123"/>
-    </properties>
+      <jta-data-source>jdbc/educacion_continua</jta-data-source>
+      <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties/>
   </persistence-unit>
 </persistence>
