@@ -62,6 +62,15 @@ public class EvaCuestionario implements Serializable {
     public void setEstado(EstadoCuestionarioEnum estado) {
         this.estado = estado;
     }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+    
     
     @Override
     public int hashCode() {

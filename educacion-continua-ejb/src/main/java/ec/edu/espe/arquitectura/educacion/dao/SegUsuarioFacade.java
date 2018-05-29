@@ -6,9 +6,11 @@
 package ec.edu.espe.arquitectura.educacion.dao;
 
 import ec.edu.espe.arquitectura.educacion.model.SegUsuario;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -29,4 +31,9 @@ public class SegUsuarioFacade extends AbstractFacade<SegUsuario> {
         super(SegUsuario.class);
     }
     
+    public List<SegUsuario> findByCodigo(String codigo) {
+        Query qry = this.em.createQuery("SELECT obj FROM SegUsuario obj WHERE obj.codigo=?1");
+        qry.setParameter(1, codigo);
+        return qry.getResultList();
+    }
 }
