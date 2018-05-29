@@ -5,8 +5,9 @@
  */
 package ec.edu.espe.arquitectura.educacion;
 
+import ec.edu.espe.arquitectura.educacion.BaseBean;
 import ec.edu.espe.arquitectura.educacion.model.InsClase;
-import ec.edu.espe.arquitectura.educacion.services.InsClaseServ;
+import ec.edu.espe.arquitectura.educacion.service.InsClaseServ;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;

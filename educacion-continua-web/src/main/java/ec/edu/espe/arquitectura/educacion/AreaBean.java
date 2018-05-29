@@ -7,8 +7,8 @@ package ec.edu.espe.arquitectura.educacion;
 
 import ec.edu.espe.arquitectura.educacion.enums.EstadoAreaEnum;
 import ec.edu.espe.arquitectura.educacion.model.InsArea;
-import ec.edu.espe.arquitectura.educacion.services.InsAreaServ;
-import ec.edu.espe.arquitectura.educacion.util.FacesUtil;
+import ec.edu.espe.arquitectura.educacion.service.InsAreaServ;
+import ec.edu.espe.arquitectura.educacion.web.util.FacesUtil;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;

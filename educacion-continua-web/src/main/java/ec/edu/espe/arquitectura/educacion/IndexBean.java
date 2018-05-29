@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ec.edu.espe.arquitectura.educacion.web;
+package ec.edu.espe.arquitectura.educacion;
 
 import ec.edu.espe.arquitectura.educacion.model.SegUsuario;
 import ec.edu.espe.arquitectura.educacion.service.AutenticacionService;
@@ -33,7 +33,7 @@ public class IndexBean implements Serializable{
         SegUsuario usuario = this.autenticacionService.login(this.codigoUsuario, this.clave);
         if (usuario!=null) {
             this.usuarioSessionBean.setUsuario(usuario);
-            return "persona";
+            return "Principal";
         } else {
             FacesUtil.addMessageError(null, "Los datos ingresados son incorrectos");
             return "index";

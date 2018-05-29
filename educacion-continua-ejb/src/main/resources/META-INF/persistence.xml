@@ -3,6 +3,5 @@
   <persistence-unit name="educacion_continua-evaluacion_docente" transaction-type="JTA">
     <jta-data-source>jdbc/educacion_continua</jta-data-source>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
-    <properties/>
   </persistence-unit>
 </persistence>

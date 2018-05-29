@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ec.edu.espe.arquitectura.educacion.web;
+package ec.edu.espe.arquitectura.educacion;
 
 import ec.edu.espe.arquitectura.educacion.model.InsAula;
 import ec.edu.espe.arquitectura.educacion.model.InsFranja;

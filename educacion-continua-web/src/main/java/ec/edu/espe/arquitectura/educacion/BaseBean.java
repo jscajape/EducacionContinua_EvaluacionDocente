@@ -1,4 +1,7 @@
 /*
+ * Hades Cruise
+ * Aplicaciones Distribuidas
+ * NRC: 2434 
  * Tutor: HENRY RAMIRO CORAL CORAL 
  * 2017 (c) Hades Cruise Corp.
  */
