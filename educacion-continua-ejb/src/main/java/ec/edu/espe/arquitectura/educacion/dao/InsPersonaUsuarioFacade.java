@@ -5,7 +5,7 @@
  */
 package ec.edu.espe.arquitectura.educacion.dao;
 
-import ec.edu.espe.arquitectura.educacion.model.SegRol;
+import ec.edu.espe.arquitectura.educacion.model.InsPersonaUsuario;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -17,7 +17,7 @@ import javax.persistence.Query;
  * @author js_cm
  */
 @Stateless
-public class SegRolFacade extends AbstractFacade<SegRol> {
+public class InsPersonaUsuarioFacade extends AbstractFacade<InsPersonaUsuario> {
 
     @PersistenceContext(unitName = "educacion_continua-evaluacion_docente")
     private EntityManager em;
@@ -27,10 +27,14 @@ public class SegRolFacade extends AbstractFacade<SegRol> {
         return em;
     }
 
-    public SegRolFacade() {
-        super(SegRol.class);
+    public InsPersonaUsuarioFacade() {
+        super(InsPersonaUsuario.class);
     }
     
-   
+    public List<InsPersonaUsuario> PorUsuario(String codUsuario) {
+    Query qry = this.em.createQuery("SELECT obj FROM InsPersonaUsuario obj WHERE obj.codigo.codPersona =?1)");
+    qry.setParameter(1, codUsuario);
+    return qry.getResultList();
+    }
     
 }

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//ES" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <ui:composition template="/templates/plantilla.xhtml">
+        <ui:define name="contenido">
+            
+            <p:panel id="mainPnl" header="Seleccione Evaluaciòn" style="width: 50%; margin: auto;">
+                
+                <p:panelGrid columns="4" style="margin: 0 auto;">                    
+                    
+                                        
+                    <p:outputLabel for="tipoEvaluacion" value="Tipo Evaluacion:" />
+                        <p:selectOneMenu id="tipoEvaluacion" value="#{evaluacionAdminBean.rolBusqueda}" rendered="true">
+                            <f:selectItems var="rol" value="#{evaluacionAdminBean.rolesUsuario}" itemLabel="#{rol.codigo.codRol} - DOCENTE" itemValue="#{rol.codigo.codRol}" />
+                    
+                        <p:ajax update="clase" listener="#{evaluacionAdminBean.actualizarClases()}"/>
+                        </p:selectOneMenu>
+                    
+                    
+                    
+                </p:panelGrid>
+                
+                <h:outputText value="&lt;br/&gt;" escape="false" />
+                <h:panelGroup style="display:block; text-align:center">
+                    <p:commandButton value="Responder Evaluacion" action="#{evaluacionAdminBean.responderEvaluacion()}" ajax="false"/>
+                </h:panelGroup>               
+                
+                
+            </p:panel>
+            <p:messages globalOnly="true" showDetail="true" severity="error" />
+            
+        </ui:define>
+    </ui:composition>
+</html>
