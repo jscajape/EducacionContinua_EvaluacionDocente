@@ -32,7 +32,11 @@ public class SegUsuarioService {
     }
 
     public void crear(SegUsuario segUsuario) {
-        this.segUsuarioFacade.create(segUsuario);
+        if(this.segUsuarioFacade.find(segUsuario.getCodigo()) == null){
+            this.segUsuarioFacade.create(segUsuario);
+        }else{
+            this.segUsuarioFacade.create(segUsuario);
+        }
     }
     
     public void modificar(SegUsuario segUsuario) {

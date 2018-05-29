@@ -8,25 +8,42 @@
       xmlns:ui="http://java.sun.com/jsf/facelets">
     <ui:composition template="/templates/plantilla.xhtml">
         <ui:define name="contenido">
-            <p:panel id="mainPnl" header="Agregar Cliente" style="width: 50%; margin: auto;">
-                <p:dataTable var="persona" value="#{insPersonaBean.insPersonas}"
-                             selectionMode="single" selection="#{insPersonaBean.insPersonaSel}" rowKey="#{persona.codigo}">
+            <p:panel id="mainPnl" header="Agregar Persona" style="width: 90%; margin: auto;">
+                <p:dataTable var="persona" value="#{insPersonaBean.insPersonas}" selectionMode="single" rows="10" style="width:1400px"
+                             selection="#{insPersonaBean.insPersonaSel}" rowKey="#{persona.codigo}" paginator="true"
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
                     <p:ajax event="rowSelect" update="@form" />
                     <p:ajax event="rowUnselect" update="@form" />
-                    <p:column headerText="Identificacion">
+                    <p:column headerText="Identificacion / Codigo">
                         <h:outputText value="#{persona.codigo}" />
                     </p:column>
                     <p:column headerText="Nombre">
                         <h:outputText value="#{persona.nombre}" />
                     </p:column>
                     <p:column headerText="Apellido">
+                        <h:outputText value="#{persona.apellido}" />
+                    </p:column>
+                    <p:column headerText="Fecha de Nacimiento">
+                        <h:outputText value="#{persona.fecNac}" />
+                    </p:column>
+                    <p:column headerText="Genero">
                         <h:outputText value="#{persona.genero}" />
                     </p:column>
                     <p:column headerText="Direccion">
+                        <h:outputText value="#{persona.direccion}" />
+                    </p:column>
+                    <p:column headerText="Telefono">
                         <h:outputText value="#{persona.telefono}" />
+                    </p:column>
+                    <p:column headerText="ESTADO">
+                        <h:outputText value="#{persona.estado}" />
                     </p:column>
                 </p:dataTable>
                 <p:commandButton value="Agregar" actionListener="#{insPersonaBean.agregar()}" update="@form"/>
+                <p:commandButton id="modBtn" value="Modificar" actionListener="#{insPersonaBean.modificar()}" update="@form" disabled="#{insPersonaBean.insPersonaSel eq null}"/>
+                <p:commandButton value="Eliminar" actionListener="#{insPersonaBean.eliminar()}" update="@form" disabled="#{insPersonaBean.insPersonaSel eq null}">
+                    <p:confirm header="Confirmaci&#243;n" message="Desea eliminar la persona de nombre de nombre: #{insPersonaBean.insPersonaSel.nombre}" icon="ui-icon-alert" />
+                </p:commandButton>
                 <p:panel header="Registrar Persona" rendered="#{insPersonaBean.habilitaForm}">
                     <p:panelGrid columns="3">
                         <p:outputLabel for="codigo" value="Identificaci&#243;n" />
@@ -42,7 +59,10 @@
                         <p:inputText id="direccion" value="#{insPersonaBean.insPersona.direccion}"  required="true" requiredMessage="Debe ingresara la descripcion"/>
                         <p:message for="direccion" />
                         <p:outputLabel for="genero" value="Genero" />
-                        <p:inputText id="genero" value="#{insPersonaBean.insPersona.genero}"  required="true" requiredMessage="Debe ingresara la descripcion"/>
+                        <p:selectOneMenu id="genero" value="#{insPersonaBean.insPersona.genero}" style="width:125px" required="true" requiredMessage="Debe ingresara la descripcion">
+                            <f:selectItem itemLabel="MASCULINO" itemValue="M" />
+                            <f:selectItem itemLabel="FEMENINO" itemValue="F" />
+                        </p:selectOneMenu>
                         <p:message for="genero" />
                         <p:outputLabel for="telefono" value="Tel&#233;fono" />
                         <p:inputText id="telefono" value="#{insPersonaBean.insPersona.telefono}"  required="true" requiredMessage="Debe ingresara la descripcion"/>
@@ -53,21 +73,21 @@
                         <p:outputLabel for="fechaNacimiento" value="Fecha Nacimiento" />
                         <p:calendar id="fechaNacimiento" value="#{insPersonaBean.insPersona.fecNac}" required="true" requiredMessage="Debe ingresara la fecha de nacimiento" showOn="button" pattern="MM/dd/yyyy"/>
                         <p:message for="fechaNacimiento" />
-                        <p:outputLabel for="perfil" value="Perfil" />
-                        <p:selectOneMenu id="perfil" value="#{insPersonaBean.segUsuario.segPerfil.codigo}">
-                            <f:selectItem itemValue="PRE" itemLabel="PRE-RESERVA"/>
-                            <f:selectItem itemValue="RES" itemLabel="RESERVADO"/>
-                            <f:selectItem itemValue="ANU" itemLabel="ANULADO"/>
+                        <p:outputLabel for="estado" value="Estado" rendered="#{insPersonaBean.enModificar}"/>
+                        <p:selectOneMenu id="estado" value="#{insPersonaBean.estado}" style="width:125px" rendered="#{insPersonaBean.enModificar}">
+                            <f:selectItem itemLabel="ACTIVO" itemValue="ACT" />
+                            <f:selectItem itemLabel="INACTIVO" itemValue="INA" />
                         </p:selectOneMenu>
-                        <p:message for="perfil" />
-                        <p:outputLabel for="email" value="Correo Electronico" />
-                        <p:inputText id="email" value="#{insPersonaBean.segUsuario.correoElectronico}" maxlength="3" required="true" requiredMessage="Debe ingresara la descripcion"/>
-                        <p:message for="email" />
+                        <p:message for="estado" />
                     </p:panelGrid>
                     <p:commandButton value="Aceptar" actionListener="#{insPersonaBean.guardar}" update="@form" />
                     <p:commandButton value="Cancelar" actionListener="#{insPersonaBean.cancelar}" update="@form" immediate="true"/>
                 </p:panel>
             </p:panel>
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
         </ui:define>
     </ui:composition>
 </html>

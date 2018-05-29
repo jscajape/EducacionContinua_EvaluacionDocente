@@ -6,17 +6,15 @@
 package ec.edu.espe.arquitectura.educacion.web;
 
 import ec.edu.espe.arquitectura.educacion.enums.EstadoPersonaEnum;
-import ec.edu.espe.arquitectura.educacion.enums.EstadoUsuarioEnum;
 import ec.edu.espe.arquitectura.educacion.model.InsPersona;
+import ec.edu.espe.arquitectura.educacion.model.SegPerfil;
 import ec.edu.espe.arquitectura.educacion.model.SegUsuario;
 import ec.edu.espe.arquitectura.educacion.service.InsPersonaService;
+import ec.edu.espe.arquitectura.educacion.service.SegPerfilService;
 import ec.edu.espe.arquitectura.educacion.service.SegUsuarioService;
 import ec.edu.espe.arquitectura.educacion.web.util.FacesUtil;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -31,6 +29,8 @@ import javax.inject.Named;
 public class InsPersonaBean extends BaseBean implements Serializable {
     private List<InsPersona> insPersonas;
 
+    private List<SegPerfil> segPerfiles;
+    
     private InsPersona insPersona;
 
     private InsPersona insPersonaSel;
@@ -40,16 +40,21 @@ public class InsPersonaBean extends BaseBean implements Serializable {
     private SegUsuario segUsuarioSel;
     
     private String Estado;
+    private String perfil;
 
     @Inject
     private InsPersonaService insPersonaService;
     
     @Inject
     private SegUsuarioService segUsuarioService;
+    
+    @Inject
+    private SegPerfilService segPerfilService;
 
     @PostConstruct
     public void init() {
         this.insPersonas = this.insPersonaService.obtenerTodos();
+        this.segPerfiles = this.segPerfilService.obtenerTodos();
         this.insPersona = new InsPersona();
         this.segUsuario = new SegUsuario();
     }
@@ -59,17 +64,17 @@ public class InsPersonaBean extends BaseBean implements Serializable {
         this.insPersona = new InsPersona();
         this.insPersona.setEstado(EstadoPersonaEnum.ACT);
         this.segUsuario = new SegUsuario();
-        this.segUsuario.setFechaCreacion(new Date());
-        this.segUsuario.setEstado(EstadoUsuarioEnum.ACT);
-        this.segUsuario.setFechaUltimoAcceso(null);
-        List<String> stringsAleatorios = new ArrayList<>(10);
-        for (int i = 0; i < 10; i++)
-            stringsAleatorios.add(UUID.randomUUID().toString());
-        String claveGenerada = "";
-        for (int i = 0; i < 10; i++)
-            claveGenerada += stringsAleatorios.get(i);
-        this.segUsuario.setClave(claveGenerada);
-        this.segUsuario.setIntentosErroneos(0);
+//        this.segUsuario.setFechaCreacion(new Date());
+//        this.segUsuario.setEstado(EstadoUsuarioEnum.ACT);
+//        this.segUsuario.setFechaUltimoAcceso(null);
+//        List<String> stringsAleatorios = new ArrayList<>(10);
+//        for (int i = 0; i < 10; i++)
+//            stringsAleatorios.add(UUID.randomUUID().toString());
+//        String claveGenerada = "";
+//        for (int i = 0; i < 10; i++)
+//            claveGenerada += stringsAleatorios.get(i);
+//        this.segUsuario.setClave(claveGenerada);
+//        this.segUsuario.setIntentosErroneos(0);
         super.agregar();
         
     }
@@ -86,13 +91,11 @@ public class InsPersonaBean extends BaseBean implements Serializable {
         this.insPersona.setTelefono(this.insPersonaSel.getTelefono());
         this.insPersona.setGenero(this.insPersonaSel.getGenero());
         this.insPersona.setFecNac(this.insPersonaSel.getFecNac());
-        if(Estado.compareTo("ACT") == 0)
-            this.insPersona.setEstado(EstadoPersonaEnum.ACT);
-        else
-            this.insPersona.setEstado(EstadoPersonaEnum.INA);
-        
-        this.segUsuario = this.segUsuarioService.obtenerPorCodigo(insPersona.getCodigo());
-
+        this.insPersona.setEstado(this.insPersonaSel.getEstado());
+//        if(this.insPersonaSel.getEstado() == EstadoPersonaEnum.ACT)
+//            Estado = "ACT";
+//        else
+//            Estado = "INA";
     }
 
     @Override
@@ -107,17 +110,26 @@ public class InsPersonaBean extends BaseBean implements Serializable {
     }
 
     public void guardar() {
-        this.segUsuario.setCodigo(this.insPersona.getCodigo());
-        this.segUsuario.setNombre(this.insPersona.getNombre());
         try {
             this.insPersonaService.crear(this.insPersona);
-            FacesUtil.addMessageInfo("Se agregó el cliente: " + this.insPersona.getNombre() + " " + this.insPersona.getApellido());
+            FacesUtil.addMessageInfo("Se agregó el persona: " + this.insPersona.getNombre() + " " + this.insPersona.getApellido());
         } catch (Exception ex) {
             FacesUtil.addMessageError(null, "Ocurrí\u00f3 un error al actualizar la informaci\u00f3n");
         }
         super.reset();
         this.insPersona = new InsPersona();
         this.insPersonas = this.insPersonaService.obtenerTodos();
+    }
+    
+    public void eliminar() {
+        try {
+            this.insPersonaService.eliminar(this.insPersonaSel.getCodigo());
+            this.insPersonas = this.insPersonaService.obtenerTodos();
+            FacesUtil.addMessageInfo("Se elimino el registro.");
+            this.insPersonaSel = null;
+        } catch (Exception e) {
+            FacesUtil.addMessageError(null, "No se puede eliminar el registro seleccionado. Verifique que no tenga informacion relacionada.");
+        }
     }
 
     public List<InsPersona> getInsPersonas() {
@@ -158,6 +170,30 @@ public class InsPersonaBean extends BaseBean implements Serializable {
 
     public void setSegUsuarioSel(SegUsuario segUsuarioSel) {
         this.segUsuarioSel = segUsuarioSel;
+    }
+
+    public List<SegPerfil> getSegPerfiles() {
+        return segPerfiles;
+    }
+
+    public void setSegPerfiles(List<SegPerfil> segPerfiles) {
+        this.segPerfiles = segPerfiles;
+    }
+
+    public String getEstado() {
+        return Estado;
+    }
+
+    public void setEstado(String Estado) {
+        this.Estado = Estado;
+    }
+
+    public String getPerfil() {
+        return perfil;
+    }
+
+    public void setPerfil(String perfil) {
+        this.perfil = perfil;
     }
     
     

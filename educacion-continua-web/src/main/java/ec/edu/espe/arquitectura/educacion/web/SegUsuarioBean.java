@@ -7,10 +7,17 @@
  */
 package ec.edu.espe.arquitectura.educacion.web;
 
+import ec.edu.espe.arquitectura.educacion.enums.EstadoUsuarioEnum;
+import ec.edu.espe.arquitectura.educacion.model.SegPerfil;
 import ec.edu.espe.arquitectura.educacion.model.SegUsuario;
+import ec.edu.espe.arquitectura.educacion.service.SegPerfilService;
 import ec.edu.espe.arquitectura.educacion.service.SegUsuarioService;
+import ec.edu.espe.arquitectura.educacion.web.util.FacesUtil;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -23,91 +30,98 @@ import javax.inject.Named;
 @Named
 @ViewScoped
 public class SegUsuarioBean extends BaseBean implements Serializable {
-    
+
     private List<SegUsuario> segUsuarios;
+
+    private List<SegPerfil> segPerfiles;
 
     private SegUsuario segUsuario;
 
     private SegUsuario segUsuarioSel;
 
+    private String estado;
+
     @Inject
     private SegUsuarioService SegUsuarioService;
+    @Inject
+    private SegPerfilService segPerfilService;
 
     @PostConstruct
     public void init() {
         this.segUsuarios = this.SegUsuarioService.obtenerTodos();
+        this.segPerfiles = this.segPerfilService.obtenerTodos();
         this.segUsuario = new SegUsuario();
     }
 
-//    public List<Cliente> getclientes() {
-//        return clientes;
-//    }
-//
-//    @Override
-//    public void agregar() {
-//        this.cliente = new Cliente();
-//        this.cliente.setClientePK(new ClientePK());
-//        super.agregar();
-//        
-//    }
-//
-//    @Override
-//    public void modificar() {
-//        super.modificar();
-//        this.cliente = new Cliente();
-//        this.cliente.setClientePK(this.clienteSel.getClientePK());
-//        this.cliente.setNombre(this.clienteSel.getNombre());
-//        this.cliente.setApellido(this.clienteSel.getApellido());
-//        this.cliente.setPais(this.clienteSel.getPais());
-//        this.cliente.setDireccion(this.clienteSel.getDireccion());
-//        this.cliente.setTelefono(this.clienteSel.getTelefono());
-//        this.cliente.setCorreoElectronico(this.clienteSel.getCorreoElectronico());
-//    }
-//
-//    @Override
-//    public void detalles() {
-//        super.detalles();
-//        this.cliente = this.clienteSel;
-//    }
-//
-//    public void cancelar() {
-//        super.reset();
-//        this.cliente.setClientePK(new ClientePK());
-//        this.cliente = new Cliente();
-//    }
-//
-//    public void guardar() {
-//        try {
-//            this.clienteService.crear(this.cliente);
-//            FacesUtil.addMessageInfo("Se agregó el cliente: " + this.cliente.getNombre() + " " + this.cliente.getApellido());
-//        } catch (Exception ex) {
-//            FacesUtil.addMessageError(null, "Ocurrí\u00f3 un error al actualizar la informaci\u00f3n");
-//        }
-//        super.reset();
-//        this.cliente.setClientePK(new ClientePK());
-//        this.cliente = new Cliente();
-//        this.clientes = this.clienteService.obtenerTodos();
-//    }
-//
-//    public Cliente getCliente() {
-//        return cliente;
-//    }
-//
-//    public void setCliente(Cliente cliente) {
-//        this.cliente = cliente;
-//    }
-//
-//    public Cliente getClienteSel() {
-//        return clienteSel;
-//    }
-//
-//    public void setClienteSel(Cliente clienteSel) {
-//        this.clienteSel = clienteSel;
-//    }
-//
-//    public List<Cliente> getClientes() {
-//        return clientes;
-//    }
+    @Override
+    public void agregar() {
+        this.segUsuario = new SegUsuario();
+        this.segUsuario.setEstado(EstadoUsuarioEnum.ACT);
+        this.segUsuario.setFechaCreacion(new Date());
+        this.segUsuario.setFechaUltimoAcceso(null);
+        List<String> stringsAleatorios = new ArrayList<>(10);
+        for (int i = 0; i < 10; i++) {
+            stringsAleatorios.add(UUID.randomUUID().toString());
+        }
+        String claveGenerada = "";
+        for (int i = 0; i < 10; i++) {
+            claveGenerada += stringsAleatorios.get(i);
+        }
+        this.segUsuario.setClave(claveGenerada);
+        this.segUsuario.setIntentosErroneos(0);
+        this.estado = this.segUsuario.getEstado().name();
+        super.agregar();
+
+    }
+
+    @Override
+    public void modificar() {
+        super.modificar();
+        this.segUsuario = new SegUsuario();
+        this.segUsuario.setCodigo(this.segUsuarioSel.getCodigo());
+        this.segUsuario.setNombre(this.segUsuarioSel.getNombre());
+        this.segUsuario.setSegPerfil(this.segUsuarioSel.getSegPerfil());
+        this.segUsuario.setCorreoElectronico(this.segUsuarioSel.getCorreoElectronico());
+        this.segUsuario.setEstado(this.segUsuarioSel.getEstado());
+        this.segUsuario.setIntentosErroneos(this.segUsuarioSel.getIntentosErroneos());
+        this.segUsuario.setClave(this.segUsuarioSel.getClave());
+        this.segUsuario.setFechaCreacion(this.segUsuarioSel.getFechaCreacion());
+        this.segUsuario.setFechaUltimoAcceso(this.segUsuarioSel.getFechaUltimoAcceso());
+    }
+
+    @Override
+    public void detalles() {
+        super.detalles();
+        this.segUsuario = this.segUsuarioSel;
+    }
+
+    public void cancelar() {
+        super.reset();
+        this.segUsuario = new SegUsuario();
+    }
+
+    public void guardar() {
+        if (this.estado.compareTo("ACT") == 0) {
+            this.segUsuario.setEstado(EstadoUsuarioEnum.ACT);
+        } else if (this.estado.compareTo("INA") == 0) {
+            this.segUsuario.setEstado(EstadoUsuarioEnum.INA);
+        } else if (this.estado.compareTo("SUS") == 0) {
+            this.segUsuario.setEstado(EstadoUsuarioEnum.SUS);
+        } else if (this.estado.compareTo("BLO") == 0) {
+            this.segUsuario.setEstado(EstadoUsuarioEnum.BLO);
+        } else if (this.estado.compareTo("PEN") == 0) {
+            this.segUsuario.setEstado(EstadoUsuarioEnum.PEN);
+        }
+        try {
+            this.SegUsuarioService.crear(this.segUsuario);
+            FacesUtil.addMessageInfo("Se creo usuario para: " + this.segUsuario.getNombre());
+        } catch (Exception ex) {
+            FacesUtil.addMessageError(null, "Ocurrí\u00f3 un error al actualizar la informaci\u00f3n");
+        }
+        super.reset();
+        this.segUsuario = new SegUsuario();
+        this.segUsuarios = this.SegUsuarioService.obtenerTodos();
+    }
 
     public List<SegUsuario> getSegUsuarios() {
         return segUsuarios;
@@ -132,6 +146,21 @@ public class SegUsuarioBean extends BaseBean implements Serializable {
     public void setSegUsuarioSel(SegUsuario segUsuarioSel) {
         this.segUsuarioSel = segUsuarioSel;
     }
-    
-    
+
+    public List<SegPerfil> getSegPerfiles() {
+        return segPerfiles;
+    }
+
+    public void setSegPerfiles(List<SegPerfil> segPerfiles) {
+        this.segPerfiles = segPerfiles;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
 }

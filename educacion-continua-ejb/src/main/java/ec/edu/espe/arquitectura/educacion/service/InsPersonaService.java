@@ -30,7 +30,12 @@ public class InsPersonaService {
     }
 
     public void crear(InsPersona insPersona) {
-        this.insPersonaFacade.create(insPersona);
+        if(this.insPersonaFacade.find(insPersona.getCodigo()) == null){
+            this.insPersonaFacade.create(insPersona);
+        }else{
+            this.insPersonaFacade.edit(insPersona);
+        }
+        
     }
     
     public void modificar(InsPersona insPersona) {
@@ -41,10 +46,4 @@ public class InsPersonaService {
         InsPersona insPersona = this.insPersonaFacade.find(codigo);
         this.insPersonaFacade.remove(insPersona);
     } 
-    
-    public InsPersona obtenerPorId(String cod)
-    {
-        return this.insPersonaFacade.find(cod);
-    }
-    
 }

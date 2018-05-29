@@ -8,24 +8,63 @@
       xmlns:ui="http://java.sun.com/jsf/facelets">
     <ui:composition template="/templates/plantilla.xhtml">
         <ui:define name="contenido">
-            <p:panel id="mainPnl" header="Agregar Cliente" style="width: 50%; margin: auto;">
-                <p:dataTable var="usuario" value="#{segUsuarioBean.segUsuarios}"
-                             selectionMode="single" selection="#{segUsuarioBean.segUsuarioSel}" rowKey="#{usuario.codigo}">
+            <p:panel id="mainPnl" header="Agregar Persona" style="width: 90%; margin: auto;">
+                <p:dataTable var="usuario" value="#{segUsuarioBean.segUsuarios}" selectionMode="single" rows="10" style="width:1400px"
+                             selection="#{segUsuarioBean.segUsuarioSel}" rowKey="#{usuario.codigo}" paginator="true"
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
                     <p:ajax event="rowSelect" update="@form" />
                     <p:ajax event="rowUnselect" update="@form" />
-                    <p:column headerText="Identificacion">
+                    <p:column headerText="Identificacion / Codigo">
                         <h:outputText value="#{usuario.codigo}" />
                     </p:column>
                     <p:column headerText="Nombre">
                         <h:outputText value="#{usuario.nombre}" />
                     </p:column>
-                    <p:column headerText="Apellido">
+                    <p:column headerText="Correo electronico">
                         <h:outputText value="#{usuario.correoElectronico}" />
                     </p:column>
-                    <p:column headerText="Direccion">
-                        <h:outputText value="#{usuario.nombre}" />
+                    <p:column headerText="Fecha Creaciono">
+                        <h:outputText value="#{usuario.fechaCreacion}" />
+                    </p:column>
+                    <p:column headerText="Fecha ultimo acceso">
+                        <h:outputText value="#{usuario.fechaUltimoAcceso}" />
+                    </p:column>
+                    <p:column headerText="PERFIL">
+                        <h:outputText value="#{usuario.segPerfil.nombre}" />
+                    </p:column>
+                    <p:column headerText="ESTADO">
+                        <h:outputText value="#{usuario.estado.texto}" />
+                    </p:column>
+                    <p:column headerText="Intentos Erroneos">
+                        <h:outputText value="#{usuario.intentosErroneos}" />
                     </p:column>
                 </p:dataTable>
+                <p:commandButton value="Agregar" actionListener="#{segUsuarioBean.agregar()}" update="@form"/>
+                <p:commandButton id="modBtn" value="Modificar" actionListener="#{segUsuarioBean.modificar()}" update="@form" disabled="#{segUsuarioBean.segUsuarioSel eq null}"/>
+                <p:panel header="Registrar Persona" rendered="#{segUsuarioBean.habilitaForm}">
+                    <p:panelGrid columns="3">
+                        <p:outputLabel for="codigo" value="Identificaci&#243;n" />
+                        <p:inputText id="codigo" value="#{segUsuarioBean.segUsuario.codigo}" disabled="#{segUsuarioBean.enModificar}" required="true" requiredMessage="Debe ingresar el codigo"/>
+                        <p:message for="codigo" />
+                        <p:outputLabel for="nombre" value="Nombre" />
+                        <p:inputText id="nombre" value="#{segUsuarioBean.segUsuario.nombre}"  required="true" requiredMessage="Debe ingresara la descripcion"/>
+                        <p:message for="nombre" />
+                        <p:outputLabel for="correo" value="Correo Electronico" />
+                        <p:inputText id="correo" value="#{segUsuarioBean.segUsuario.correoElectronico}"  required="true" requiredMessage="Debe ingresara la descripcion"/>
+                        <p:message for="correo" />
+                        <p:outputLabel for="estado" value="Estado" rendered="#{segUsuarioBean.enModificar}"/>
+                        <p:selectOneMenu id="estado" value="#{segUsuarioBean.estado}" style="width:125px" rendered="#{segUsuarioBean.enModificar}">
+                            <f:selectItem itemLabel="ACTIVO" itemValue="ACT" />
+                            <f:selectItem itemLabel="INACTIVO" itemValue="INA" />
+                            <f:selectItem itemLabel="SUSPENDIDO" itemValue="SUS" />
+                            <f:selectItem itemLabel="BLOQUEADO" itemValue="BLO" />
+                            <f:selectItem itemLabel="PENDIENTE" itemValue="PEN" />
+                        </p:selectOneMenu>
+                        <p:message for="estado" />
+                    </p:panelGrid>
+                    <p:commandButton value="Aceptar" actionListener="#{segUsuarioBean.guardar}" update="@form" />
+                    <p:commandButton value="Cancelar" actionListener="#{segUsuarioBean.cancelar}" update="@form" immediate="true"/>
+                </p:panel>
             </p:panel>
         </ui:define>
     </ui:composition>
