@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//ES" 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//ES"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
@@ -9,8 +9,8 @@
     <ui:composition template="/templates/plantilla.xhtml">
         <ui:define name="contenido">
             <p:panel id="mainPnl" header="AREAS" style="width: 50%; margin: auto;">
-                
-                <p:dataTable var="area" value="#{areaBean.insAreas}" 
+
+                <p:dataTable var="area" value="#{areaBean.insAreas}"
                              selectionMode="single" selection="#{areaBean.insAreaSel}" rowKey="#{area.codigo}">
                     <p:ajax event="rowSelect" update="@form" />
                     <p:ajax event="rowUnselect" update="@form" />
@@ -29,23 +29,23 @@
                  <p:commandButton value="Eliminar" actionListener="#{areaBean.eliminar()}" update="@form" disabled="#{areaBean.insAreaSel eq null}"/>
                 <p:panel header="Registrar cliente" rendered="#{areaBean.habilitaForm}">
                     <p:panelGrid columns="2">
-                        
+
                         <p:outputLabel for="codigo" value="Codigo" />
                         <p:inputText id="codigo" value="#{areaBean.insArea.codigo}"  required="true" requiredMessage="Debe ingresar el codigo"/>
-                        
+
                         <p:outputLabel for="descripcion" value="descripcion" />
                         <p:inputText id="descripcion" value="#{areaBean.insArea.descripcion}"  required="true" requiredMessage="Debe ingresar la descripcion"/>
                         <p:outputLabel for="tipo" value="tipo" />
                         <h:selectOneMenu value="#{areaBean.insArea.estado}" style="background-color: black" >
-                            <f:selectItems id="tipo" value="#{areaBean.tiposArea}" var="tiposArea" itemValue="#{tiposArea}" itemLabel="#{tiposArea.texto}"  />                          
+                            <f:selectItems id="tipo" value="#{areaBean.tiposArea}" var="tiposArea" itemValue="#{tiposArea}" itemLabel="#{tiposArea.texto}"  />
                         </h:selectOneMenu>
                     </p:panelGrid>
                     <p:commandButton value="Aceptar" actionListener="#{areaBean.guardar()}" update="@form" />
                     <p:commandButton value="Cancelar" actionListener="#{areaBean.cancelar()}" update="@form" immediate="true"/>
                 </p:panel>
                 </p:panel>
-           <h:form>  
-    
+           <h:form>
+
 </h:form>
         </ui:define>
     </ui:composition>

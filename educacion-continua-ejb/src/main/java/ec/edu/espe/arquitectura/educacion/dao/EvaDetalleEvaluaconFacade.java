@@ -28,6 +28,4 @@ public class EvaDetalleEvaluaconFacade extends AbstractFacade<EvaDetalleEvaluaco
     public EvaDetalleEvaluaconFacade() {
         super(EvaDetalleEvaluacon.class);
     }
-    
-    
 }

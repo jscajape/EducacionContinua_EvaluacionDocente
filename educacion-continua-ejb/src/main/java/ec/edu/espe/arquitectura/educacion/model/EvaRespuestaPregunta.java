@@ -40,6 +40,15 @@ public class EvaRespuestaPregunta implements Serializable {
 
     public EvaRespuestaPregunta() {
     }
+    
+    public EvaRespuestaPregunta(Integer cod, int resp, InsPersona per, EvaPregunta evaPre ) {
+        
+        this.codigo=cod;
+        this.respuesta=resp;
+        this.insPersona=per;
+        this.evaPregunta=evaPre;
+        
+    }
 
     public EvaRespuestaPregunta(Integer codigo) {
         this.codigo = codigo;
