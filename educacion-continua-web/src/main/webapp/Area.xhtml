@@ -26,7 +26,7 @@
                 </p:dataTable>
                  <p:commandButton value="Agregar" actionListener="#{areaBean.agregar()}" update="@form"/>
                  <p:commandButton id="modBtn" value="Modificar" actionListener="#{areaBean.modificar()}" update="@form" disabled="#{areaBean.insAreaSel eq null}"/>
-                 <p:commandButton value="Eliminar" actionListener="#{areaBean.eliminar()}" update="@form" disabled="#{areaBean.insAreaSel eq null}"/>
+                 <p:commandButton value="Cancelar" action="Principal"/>
                 <p:panel header="Registrar Area" rendered="#{areaBean.habilitaForm}">
                     <p:panelGrid columns="2">
                         

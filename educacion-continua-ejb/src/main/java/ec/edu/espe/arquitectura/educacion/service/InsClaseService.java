@@ -28,11 +28,12 @@ public class InsClaseService {
         return this.claseFacade.findAll();
     }
     
-    public List<InsClase> obtenerPorDocente(String docente) {
-        return this.claseFacade.PorDocente(docente);
+    public List<InsClase> obtenerClasesDocente(String codDocente) {
+        return this.claseFacade.buscarPorDocente(codDocente);
     }
     
-    public List<InsClase> obtenerPorEstudiante(String estudiante) {
-        return this.claseFacade.PorEstudiante(estudiante);
+    public List<InsClase> obtenerClasesMatricula(String codEstudiante) {
+        return this.claseFacade.buscarPorEstudiante(codEstudiante);
     }
+    
 }
