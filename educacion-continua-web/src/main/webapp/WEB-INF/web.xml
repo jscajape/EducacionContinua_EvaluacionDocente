@@ -18,12 +18,12 @@
     </context-param>
     <context-param>
         <param-name>primefaces.THEME</param-name>
-        <param-value>blitzer</param-value>
+        <param-value>dot-luv</param-value>
     </context-param>
     <context-param>
         <param-name>javax.faces.DEFAULT_SUFFIX</param-name>
         <param-value>.xhtml</param-value>
-    </context-param>  
+    </context-param>
     <filter>
         <filter-name>PrimeFaces FileUpload Filter</filter-name>
         <filter-class>org.primefaces.webapp.filter.FileUploadFilter</filter-class>
@@ -40,8 +40,8 @@
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
-    
-    
+
+
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>*.jsf</url-pattern>
@@ -58,7 +58,7 @@
     <welcome-file-list>
         <welcome-file>index.xhtml</welcome-file>
     </welcome-file-list>
-    
+
     <error-page>
         <!-- Missing resource -->
         <error-code>404</error-code>

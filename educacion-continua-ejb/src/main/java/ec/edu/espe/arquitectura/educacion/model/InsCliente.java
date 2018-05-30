@@ -14,6 +14,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+
 /**
  *
  * @author js_cm

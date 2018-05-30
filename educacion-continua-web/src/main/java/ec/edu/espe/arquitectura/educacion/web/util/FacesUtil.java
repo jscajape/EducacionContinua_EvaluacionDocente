@@ -50,9 +50,9 @@ public class FacesUtil {
                 FacesContext.getCurrentInstance(), nombreBean);
     }
 
-    
 
-    
+
+
     /**
      * M�todo que permite agregar un mensaje global informativo.
      *
