@@ -38,5 +38,11 @@ public class SegPerfilService {
     public void eliminar(String codigo) {
         SegPerfil segPerfil = this.segPerfilFacade.find(codigo);
         this.segPerfilFacade.remove(segPerfil);
-    } 
+    }
+    
+    public SegPerfil obtenerPorCodifo(String codigo){
+        return this.segPerfilFacade.findByID(codigo);
+    }
+    
+    
 }

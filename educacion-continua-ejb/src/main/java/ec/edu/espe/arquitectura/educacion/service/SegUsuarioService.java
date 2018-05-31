@@ -30,12 +30,16 @@ public class SegUsuarioService {
     public SegUsuario obtenerPorCodigo(String codigo){
         return this.segUsuarioFacade.findByCodigo(codigo).get(0);
     }
+    
+    public List<SegUsuario> obtenerUsuariosPorCodigo(String codigo){
+        return this.segUsuarioFacade.findByCodigo(codigo);
+    }
 
     public void crear(SegUsuario segUsuario) {
         if(this.segUsuarioFacade.find(segUsuario.getCodigo()) == null){
             this.segUsuarioFacade.create(segUsuario);
         }else{
-            this.segUsuarioFacade.create(segUsuario);
+            this.segUsuarioFacade.edit(segUsuario);
         }
     }
     

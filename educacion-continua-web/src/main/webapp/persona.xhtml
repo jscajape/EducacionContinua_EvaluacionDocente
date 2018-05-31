@@ -6,7 +6,7 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://java.sun.com/jsf/facelets">
-    <ui:composition template="/templates/plantilla.xhtml">
+    <ui:composition template="/templates/plantillaAdmin.xhtml">
         <ui:define name="contenido">
             <p:panel id="mainPnl" header="Agregar Persona" style="width: 90%; margin: auto;">
                 <p:dataTable var="persona" value="#{insPersonaBean.insPersonas}" selectionMode="single" rows="10" style="width:1400px"
@@ -66,10 +66,7 @@
                         <p:message for="genero" />
                         <p:outputLabel for="telefono" value="Tel&#233;fono" />
                         <p:inputText id="telefono" value="#{insPersonaBean.insPersona.telefono}"  required="true" requiredMessage="Debe ingresara la descripcion"/>
-                        <p:message for="telefono" />
-                        <p:outputLabel for="tipo" value="tipo" />
-                        <p:inputText id="tipo" value="#{insPersonaBean.insPersona.tipo}" maxlength="3" required="true" requiredMessage="Debe ingresara la descripcion"/>
-                        <p:message for="tipo" />
+                        <p:message for="telefono"/>
                         <p:outputLabel for="fechaNacimiento" value="Fecha Nacimiento" />
                         <p:calendar id="fechaNacimiento" value="#{insPersonaBean.insPersona.fecNac}" required="true" requiredMessage="Debe ingresara la fecha de nacimiento" showOn="button" pattern="MM/dd/yyyy"/>
                         <p:message for="fechaNacimiento" />

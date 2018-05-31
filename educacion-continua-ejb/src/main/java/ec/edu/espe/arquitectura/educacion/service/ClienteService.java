@@ -5,7 +5,7 @@
  * Tutor: HENRY RAMIRO CORAL CORAL 
  * 2017 (c) Hades Cruise Corp.
  */
-package ec.edu.espe.arquitectura.educacion.services;
+package ec.edu.espe.arquitectura.educacion.service;
 
 import ec.edu.espe.arquitectura.educacion.dao.InsClienteFacade;
 import ec.edu.espe.arquitectura.educacion.model.InsCliente;

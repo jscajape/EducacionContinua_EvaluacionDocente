@@ -14,10 +14,9 @@ import ec.edu.espe.arquitectura.educacion.service.SegPerfilService;
 import ec.edu.espe.arquitectura.educacion.service.SegUsuarioService;
 import ec.edu.espe.arquitectura.educacion.web.util.FacesUtil;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
+import java.util.Random;
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -40,6 +39,10 @@ public class SegUsuarioBean extends BaseBean implements Serializable {
     private SegUsuario segUsuarioSel;
 
     private String estado;
+    
+    private String perfil;
+    
+    private String codigoBusqueda;
 
     @Inject
     private SegUsuarioService SegUsuarioService;
@@ -55,19 +58,31 @@ public class SegUsuarioBean extends BaseBean implements Serializable {
 
     @Override
     public void agregar() {
+        String hashtext = "";
         this.segUsuario = new SegUsuario();
         this.segUsuario.setEstado(EstadoUsuarioEnum.ACT);
         this.segUsuario.setFechaCreacion(new Date());
         this.segUsuario.setFechaUltimoAcceso(null);
-        List<String> stringsAleatorios = new ArrayList<>(10);
-        for (int i = 0; i < 10; i++) {
-            stringsAleatorios.add(UUID.randomUUID().toString());
+        String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        StringBuilder salt = new StringBuilder();
+        Random rnd = new Random();
+        while (salt.length() < 6) { // length of the random string.
+            int index = (int) (rnd.nextFloat() * SALTCHARS.length());
+            salt.append(SALTCHARS.charAt(index));
         }
-        String claveGenerada = "";
-        for (int i = 0; i < 10; i++) {
-            claveGenerada += stringsAleatorios.get(i);
-        }
-        this.segUsuario.setClave(claveGenerada);
+        String saltStr = salt.toString();
+//      ENCRIPTACION MD5  
+//        FacesUtil.addMessageInfo("La clave generada fue:"+saltStr);
+//        try {
+//            java.security.MessageDigest md = java.security.MessageDigest.getInstance("MD5");
+//            byte[] array = md.digest(saltStr.getBytes());
+//            StringBuffer sb = new StringBuffer();
+//            for (int i = 0; i < array.length; ++i) {
+//                sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100).substring(1, 3));
+//            }
+//            hashtext = sb.toString();
+//        } catch (Exception e) {}
+        this.segUsuario.setClave(saltStr);
         this.segUsuario.setIntentosErroneos(0);
         this.estado = this.segUsuario.getEstado().name();
         super.agregar();
@@ -87,6 +102,8 @@ public class SegUsuarioBean extends BaseBean implements Serializable {
         this.segUsuario.setClave(this.segUsuarioSel.getClave());
         this.segUsuario.setFechaCreacion(this.segUsuarioSel.getFechaCreacion());
         this.segUsuario.setFechaUltimoAcceso(this.segUsuarioSel.getFechaUltimoAcceso());
+        this.estado = this.segUsuarioSel.getEstado().name();
+        this.perfil = this.segUsuarioSel.getSegPerfil().getCodigo();
     }
 
     @Override
@@ -112,6 +129,7 @@ public class SegUsuarioBean extends BaseBean implements Serializable {
         } else if (this.estado.compareTo("PEN") == 0) {
             this.segUsuario.setEstado(EstadoUsuarioEnum.PEN);
         }
+        this.segUsuario.setSegPerfil(this.segPerfilService.obtenerPorCodifo(perfil));
         try {
             this.SegUsuarioService.crear(this.segUsuario);
             FacesUtil.addMessageInfo("Se creo usuario para: " + this.segUsuario.getNombre());
@@ -121,6 +139,10 @@ public class SegUsuarioBean extends BaseBean implements Serializable {
         super.reset();
         this.segUsuario = new SegUsuario();
         this.segUsuarios = this.SegUsuarioService.obtenerTodos();
+    }
+    
+    public void Buscar(){
+        this.segUsuarios = this.SegUsuarioService.obtenerUsuariosPorCodigo(this.codigoBusqueda);
     }
 
     public List<SegUsuario> getSegUsuarios() {
@@ -161,6 +183,22 @@ public class SegUsuarioBean extends BaseBean implements Serializable {
 
     public void setEstado(String estado) {
         this.estado = estado;
+    }
+
+    public String getPerfil() {
+        return perfil;
+    }
+
+    public void setPerfil(String perfil) {
+        this.perfil = perfil;
+    }
+
+    public String getCodigoBusqueda() {
+        return codigoBusqueda;
+    }
+
+    public void setCodigoBusqueda(String codigoBusqueda) {
+        this.codigoBusqueda = codigoBusqueda;
     }
 
 }

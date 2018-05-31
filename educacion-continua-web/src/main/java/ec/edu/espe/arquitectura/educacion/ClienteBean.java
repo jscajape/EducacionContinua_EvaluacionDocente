@@ -7,7 +7,7 @@ package ec.edu.espe.arquitectura.educacion;
 
 
 import ec.edu.espe.arquitectura.educacion.model.InsCliente;
-import ec.edu.espe.arquitectura.educacion.services.ClienteService;
+import ec.edu.espe.arquitectura.educacion.service.ClienteService;
 import ec.edu.espe.arquitectura.educacion.web.util.FacesUtil;
 import java.io.Serializable;
 import java.util.List;
