@@ -9,6 +9,7 @@ import ec.edu.espe.arquitectura.educacion.model.SegPerfil;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -28,5 +29,11 @@ public class SegPerfilFacade extends AbstractFacade<SegPerfil> {
     public SegPerfilFacade() {
         super(SegPerfil.class);
     }
+    
+    public SegPerfil findByID(String identificacion){
+        Query qry = this.em.createQuery("SELECT obj FROM SegPerfil obj WHERE obj.codigo=?1");
+        qry.setParameter(1, identificacion);
+        return  (SegPerfil) qry.getSingleResult();  
+    } 
     
 }

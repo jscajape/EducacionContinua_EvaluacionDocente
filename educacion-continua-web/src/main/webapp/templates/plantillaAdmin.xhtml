@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"   
+<html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
       >
     <h:head>
         <title>EDUCACION CONTINUA</title>
@@ -20,7 +21,34 @@
             </div>
             <div id="content">
                 <h:form>
+                    <p:growl id="messages"/>
+                    <p:menubar>
+                        <p:submenu  label="Area" >    
+                            <p:menuitem >
+                                <p:dataTable var="area" value="#{areaBean.insAreas}" 
+                                             selectionMode="single" selection="#{areaBean.insAreaSel}" rowKey="#{area.codigo}">
+                                    <p:ajax event="rowDblselect"/>
+                                    <p:ajax event="rowUnselect" update="@form" />
+                                    <p:column>
+                                        <h:outputText value="#{area.descripcion}" />
+                                    </p:column>     
+                                </p:dataTable>
+                            </p:menuitem>                  
+                            <p:menuitem value="Configurar" action="Area"/> 
+                        </p:submenu>
+                        <p:submenu label="Cursos">   
+                            <p:menuitem value="Cursos" action="Curso" />
+                        </p:submenu>
+                        <p:menuitem value="Personas" action="persona"/>
+                        <p:submenu label="Usuarios" >
+                            <p:menuitem value="Crear usuarios" action="UsuarioAdmin" />
+                        </p:submenu>
+                        <p:menuitem value="#{usuarioSesionBean.nombre}" url="#"/>
+                        <p:menuitem value="Salir" icon="ui-icon-extlink" action="#{indexBean.logout()}" />
+                    </p:menubar>
+                    <p:spacer height="10px"/>
                     <ui:insert name="contenido">
+
                     </ui:insert>
                     <p>&nbsp;</p>
                 </h:form>

@@ -3,13 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ec.edu.espe.arquitectura.educacion.web;
+package ec.edu.espe.arquitectura.educacion;
 import ec.edu.espe.arquitectura.educacion.model.EvaCuestionario;
-import ec.edu.espe.arquitectura.educacion.model.EvaDetalleEvaluacon;
 import ec.edu.espe.arquitectura.educacion.model.EvaEvaluacion;
 import ec.edu.espe.arquitectura.educacion.model.EvaPregunta;
 import ec.edu.espe.arquitectura.educacion.model.EvaRespuestaCuestionario;
-import ec.edu.espe.arquitectura.educacion.model.EvaRespuestaCuestionarioPK;
 import ec.edu.espe.arquitectura.educacion.model.EvaRespuestaPregunta;
 import ec.edu.espe.arquitectura.educacion.model.InsClase;
 import ec.edu.espe.arquitectura.educacion.model.InsCurso;
@@ -25,9 +23,7 @@ import ec.edu.espe.arquitectura.educacion.service.EvaPreguntaService;
 import ec.edu.espe.arquitectura.educacion.service.EvaRespuestaCuestionarioService;
 import ec.edu.espe.arquitectura.educacion.service.InsPersonaService;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
@@ -100,7 +96,7 @@ public class evaluacionAdminBean implements Serializable {
         this.rolesUsuarioPersona = this.perUsService.obtenerPorUsuario(usuario.getUsuario().getCodigo()); //CAMBIAR POR CODIGO DE USUARIO"1713627071"
         this.rolesLista=this.rolServicio.listaPorId(this.rolesUsuarioPersona);     
         
-        this.persona=this.personaService.obtenerPorId(usuario.getUsuario().getCodigo());
+        this.persona=this.personaService.obtenerPorCodigo(usuario.getUsuario().getCodigo());
         
        String auxRol=rolesLista.get(0).getCodigo();
        this.actualizarClases(auxRol);

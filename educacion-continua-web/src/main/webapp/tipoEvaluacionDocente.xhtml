@@ -6,41 +6,41 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://java.sun.com/jsf/facelets">
-    <ui:composition template="/templates/plantilla.xhtml">
+    <ui:composition template="/templates/plantillaUsuario.xhtml">
         <ui:define name="contenido">
-            
+
             <p:panel id="mainPnl" header="Seleccione Evaluaciòn" style="width: 80%; margin: auto;">
-                
+
                 <p:panelGrid columns="4" style="margin: 0 auto;">                    
-                    
-                         
-                                        
+
+
+
                     <p:outputLabel for="tipoEvaluacion" value="Tipo Evaluacion:" />
-                        <p:selectOneMenu id="tipoEvaluacion" value="#{evaluacionAdminBean.rolBusqueda}" rendered="true">
-                            <f:selectItems var="rol" value="#{evaluacionAdminBean.rolesLista}" itemLabel="#{rol.nombre} - Docente" itemValue="#{rol.codigo}" />
-                            
-                            <p:ajax update="clasee" listener="#{evaluacionAdminBean.actualizarClases(evaluacionAdminBean.rolBusqueda)}"/>
-                            <p:ajax update="@form"/>
-                        </p:selectOneMenu>
-                    
+                    <p:selectOneMenu id="tipoEvaluacion" value="#{evaluacionAdminBean.rolBusqueda}" rendered="true">
+                        <f:selectItems var="rol" value="#{evaluacionAdminBean.rolesLista}" itemLabel="#{rol.nombre} - Docente" itemValue="#{rol.codigo}" />
+
+                        <p:ajax update="clasee" listener="#{evaluacionAdminBean.actualizarClases(evaluacionAdminBean.rolBusqueda)}"/>
+                        <p:ajax update="@form"/>
+                    </p:selectOneMenu>
+
                     <p:outputLabel for="clasee" value="Clase:" />
                     <p:selectOneMenu id="clasee" value="#{evaluacionAdminBean.codClase}" rendered="true">
                         <f:selectItems var="clase1" value="#{evaluacionAdminBean.clasesEvaluacion}" itemLabel="#{clase1.insCurso.descripcion}" itemValue="#{clase1.codigo.codClase}" />
-                         
+
                         <p:ajax update="docente" listener="#{evaluacionAdminBean.actualizarDocente(evaluacionAdminBean.codClase)}"/> 
-                        </p:selectOneMenu>                                    
-                    
+                    </p:selectOneMenu>                                    
+
                 </p:panelGrid>
-                
+
                 <h:outputText value="&lt;br/&gt;" escape="false" />
-                
+
                 <h:outputText id="docente" value="Docente a Evaluar: #{evaluacionAdminBean.claseSeleccionada.insPersona.nombre} #{evaluacionAdminBean.claseSeleccionada.insPersona.apellido}"/>
 
                 <h:outputText value="&lt;br/&gt;" escape="false" />
                 <h:panelGroup style="display:block; text-align:center">
                     <p:commandButton id="respCuest" value="Responder Evaluacion" actionListener="#{evaluacionAdminBean.cargarCuestionario()}" update="@form" />
                 </h:panelGroup> 
-                
+
                 <h:outputText value="&lt;br/&gt;" escape="false" />
                 <p:tabView value="#{evaluacionAdminBean.evaPreguntas}" var="pregunta" rendered="#{evaluacionAdminBean.cuestionarioBand}">
                     <p:tab title="Pregunta #{evaluacionAdminBean.evaPreguntas.indexOf(pregunta)+1}">
@@ -48,7 +48,7 @@
                             <f:facet name="header">
                                 <h:outputText value="#{pregunta.enunciado}" />
                             </f:facet>  
-                            
+
                             <p:selectOneRadio id="pregunta#{evaluacionAdminBean.evaPreguntas.indexOf(pregunta)+1}" value="#{evaluacionAdminBean.respPregunta}">
                                 <f:selectItem itemLabel="1" itemValue="1" />
                                 <f:selectItem itemLabel="2" itemValue="2" />
@@ -60,24 +60,24 @@
                                 <f:selectItem itemLabel="8" itemValue="8" />
                                 <f:selectItem itemLabel="9" itemValue="9" />
                                 <f:selectItem itemLabel="10" itemValue="10" />
-                                
+
                                 <p:ajax listener="#{evaluacionAdminBean.guardarRespuesta(evaluacionAdminBean.evaPreguntas.indexOf(pregunta))}"/>
                             </p:selectOneRadio>
-                            
+
                         </h:panelGrid>
                     </p:tab>
-                    
+
                 </p:tabView>
-                
+
                 <h:outputText value="&lt;br/&gt;" escape="false" />
                 <h:panelGroup style="display:block; text-align:center" rendered="#{evaluacionAdminBean.cuestionarioBand}">
                     <p:commandButton id="guardarCuest" value="Guardar Evaluacion" actionListener="#{evaluacionAdminBean.guardarEvaluacion()}" update="@form" />
                 </h:panelGroup> 
-                
-                
+
+
             </p:panel>
             <p:messages globalOnly="true" showDetail="true" severity="error" />
-            
+
         </ui:define>
     </ui:composition>
 </html>
