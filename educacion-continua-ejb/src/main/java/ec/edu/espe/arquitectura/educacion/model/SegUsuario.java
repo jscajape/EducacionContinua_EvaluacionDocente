@@ -5,10 +5,13 @@
  */
 package ec.edu.espe.arquitectura.educacion.model;
 
+import ec.edu.espe.arquitectura.educacion.enums.EstadoUsuarioEnum;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -39,15 +42,16 @@ public class SegUsuario implements Serializable {
     @Column(name = "CLAVE", nullable = false, length = 64)
     private String clave;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "ESTADO", nullable = false, length = 3)
-    private String estado;
+    private EstadoUsuarioEnum estado;
 
     @Column(name = "FECHA_CREACION", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacion;
 
     @Column(name = "INTENTOS_ERRONEOS", nullable = false)
-    private short intentosErroneos;
+    private int intentosErroneos;
     
     @Column(name = "FECHA_ULTIMO_ACCESO")
     @Temporal(TemporalType.TIMESTAMP)
@@ -96,11 +100,11 @@ public class SegUsuario implements Serializable {
         this.clave = clave;
     }
 
-    public String getEstado() {
+    public EstadoUsuarioEnum getEstado() {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(EstadoUsuarioEnum estado) {
         this.estado = estado;
     }
 
@@ -112,11 +116,11 @@ public class SegUsuario implements Serializable {
         this.fechaCreacion = fechaCreacion;
     }
 
-    public short getIntentosErroneos() {
+    public int getIntentosErroneos() {
         return intentosErroneos;
     }
 
-    public void setIntentosErroneos(short intentosErroneos) {
+    public void setIntentosErroneos(int intentosErroneos) {
         this.intentosErroneos = intentosErroneos;
     }
 

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//ES" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <ui:composition template="/templates/plantilla.xhtml">
+        <ui:define name="contenido">
+            <p:panel id="mainPnl" header="Agregar Cliente" style="width: 50%; margin: auto;">
+                <p:dataTable var="persona" value="#{insPersonaBean.insPersonas}"
+                             selectionMode="single" selection="#{insPersonaBean.insPersonaSel}" rowKey="#{persona.codigo}">
+                    <p:ajax event="rowSelect" update="@form" />
+                    <p:ajax event="rowUnselect" update="@form" />
+                    <p:column headerText="Identificacion">
+                        <h:outputText value="#{persona.codigo}" />
+                    </p:column>
+                    <p:column headerText="Nombre">
+                        <h:outputText value="#{persona.nombre}" />
+                    </p:column>
+                    <p:column headerText="Apellido">
+                        <h:outputText value="#{persona.genero}" />
+                    </p:column>
+                    <p:column headerText="Direccion">
+                        <h:outputText value="#{persona.telefono}" />
+                    </p:column>
+                </p:dataTable>
+                <p:commandButton value="Agregar" actionListener="#{insPersonaBean.agregar()}" update="@form"/>
+                <p:panel header="Registrar Persona" rendered="#{insPersonaBean.habilitaForm}">
+                    <p:panelGrid columns="3">
+                        <p:outputLabel for="codigo" value="Identificaci&#243;n" />
+                        <p:inputText id="codigo" value="#{insPersonaBean.insPersona.codigo}" disabled="#{insPersonaBean.enModificar}" required="true" requiredMessage="Debe ingresar el codigo"/>
+                        <p:message for="codigo" />
+                        <p:outputLabel for="nombre" value="Nombre" />
+                        <p:inputText id="nombre" value="#{insPersonaBean.insPersona.nombre}"  required="true" requiredMessage="Debe ingresara la descripcion"/>
+                        <p:message for="nombre" />
+                        <p:outputLabel for="apellido" value="Apellido" />
+                        <p:inputText id="apellido" value="#{insPersonaBean.insPersona.apellido}"  required="true" requiredMessage="Debe ingresara la descripcion"/>
+                        <p:message for="apellido" />
+                        <p:outputLabel for="direccion" value="Direcci&#243;n" />
+                        <p:inputText id="direccion" value="#{insPersonaBean.insPersona.direccion}"  required="true" requiredMessage="Debe ingresara la descripcion"/>
+                        <p:message for="direccion" />
+                        <p:outputLabel for="genero" value="Genero" />
+                        <p:inputText id="genero" value="#{insPersonaBean.insPersona.genero}"  required="true" requiredMessage="Debe ingresara la descripcion"/>
+                        <p:message for="genero" />
+                        <p:outputLabel for="telefono" value="Tel&#233;fono" />
+                        <p:inputText id="telefono" value="#{insPersonaBean.insPersona.telefono}"  required="true" requiredMessage="Debe ingresara la descripcion"/>
+                        <p:message for="telefono" />
+                        <p:outputLabel for="tipo" value="tipo" />
+                        <p:inputText id="tipo" value="#{insPersonaBean.insPersona.tipo}" maxlength="3" required="true" requiredMessage="Debe ingresara la descripcion"/>
+                        <p:message for="tipo" />
+                        <p:outputLabel for="fechaNacimiento" value="Fecha Nacimiento" />
+                        <p:calendar id="fechaNacimiento" value="#{insPersonaBean.insPersona.fecNac}" required="true" requiredMessage="Debe ingresara la fecha de nacimiento" showOn="button" pattern="MM/dd/yyyy"/>
+                        <p:message for="fechaNacimiento" />
+                        <p:outputLabel for="perfil" value="Perfil" />
+                        <p:selectOneMenu id="perfil" value="#{insPersonaBean.segUsuario.segPerfil.codigo}">
+                            <f:selectItem itemValue="PRE" itemLabel="PRE-RESERVA"/>
+                            <f:selectItem itemValue="RES" itemLabel="RESERVADO"/>
+                            <f:selectItem itemValue="ANU" itemLabel="ANULADO"/>
+                        </p:selectOneMenu>
+                        <p:message for="perfil" />
+                        <p:outputLabel for="email" value="Correo Electronico" />
+                        <p:inputText id="email" value="#{insPersonaBean.segUsuario.correoElectronico}" maxlength="3" required="true" requiredMessage="Debe ingresara la descripcion"/>
+                        <p:message for="email" />
+                    </p:panelGrid>
+                    <p:commandButton value="Aceptar" actionListener="#{insPersonaBean.guardar}" update="@form" />
+                    <p:commandButton value="Cancelar" actionListener="#{insPersonaBean.cancelar}" update="@form" immediate="true"/>
+                </p:panel>
+            </p:panel>
+        </ui:define>
+    </ui:composition>
+</html>
