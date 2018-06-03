@@ -8,7 +8,7 @@
   <name>educacion-continua</name>
   <modules>
     <module>educacion-continua-ear</module>
-    <module>educacion-continua-web</module>
     <module>educacion-continua-ejb</module>
+    <module>educacion-continua-web</module>
   </modules>
 </project>

@@ -50,7 +50,8 @@
                 <p:panel header="Registrar Persona" rendered="#{segUsuarioBean.habilitaForm}">
                     <p:panelGrid columns="3">
                         <p:outputLabel for="codigo" value="Identificaci&#243;n" />
-
+                        <p:inputText id="codigo" value="#{segUsuarioBean.segUsuario.codigo}" disabled="#{segUsuarioBean.enModificar}" required="true" requiredMessage="Debe ingresar el codigo"/>
+                        <p:message for="codigo" />
                         <p:outputLabel for="nombre" value="Nombre" />
                         <p:inputText id="nombre" value="#{segUsuarioBean.segUsuario.nombre}"  required="true" requiredMessage="Debe ingresara la descripcion"/>
                         <p:message for="nombre" />
