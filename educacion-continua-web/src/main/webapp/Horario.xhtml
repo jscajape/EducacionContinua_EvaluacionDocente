@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//ES"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <ui:composition template="/templates/plantilla.xhtml">
+        <ui:define name="contenido">
+
+            <h:form>
+                <p:growl id="msgs" showDetail="true" />
+                <p:panel header="Crear Horarios" style="margin-bottom:10px;">
+                    <h:panelGrid columns="2" cellpadding="5">
+
+                        <p:outputLabel for="tipo" value="Tipo Aula:  " />
+                        <p:selectOneMenu id="tipo" value="#{ horarioBean.aulaTipo }">
+                            <p:ajax listener="#{horarioBean.cargarAulas()}" update="aula" />
+                            <f:selectItem itemLabel="Seleccione" itemValue="" />
+                            <f:selectItems value="#{horarioBean.aulasTipos}" />
+                        </p:selectOneMenu>
+
+                        <p:outputLabel for="aula" value="Aulas:    " />
+                        <p:selectOneMenu id="aula" value="#{ horarioBean.aula }" style="width:150px">
+                            <f:selectItem itemLabel="Seleccione" itemValue="" noSelectionOption="true" />
+                            <f:selectItems  value="#{horarioBean.aulasFilt}" var="aula" itemLabel="#{ aula.tipo }"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel for="franja" value="Franjas:   " />
+                        <p:selectOneMenu id="franja" value="#{horarioBean.franja}"  style="width:150px">
+                            <f:selectItem itemLabel="Seleccione"   noSelectionOption="true" />
+                            <f:selectItems value="#{horarioBean.franjas}" var="franja"  itemLabel="#{horarioBean.formatoHora(franja.incio)} - #{horarioBean.formatoHora(franja.fin)}"/>
+                        </p:selectOneMenu>
+
+
+                    </h:panelGrid>
+
+                    <p:separator />
+
+                    <p:commandButton value="Submit" update="msgs" actionListener="#{ horarioBean.guardarHorario()}" icon="ui-icon-check" />
+                </p:panel>
+            </h:form>
+
+        </ui:define>
+    </ui:composition>
+</html>
