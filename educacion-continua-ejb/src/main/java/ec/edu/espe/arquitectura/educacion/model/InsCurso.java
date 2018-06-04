@@ -49,7 +49,6 @@ public class InsCurso implements Serializable {
     private InsArea insArea;
     
     public InsCurso() {
-        
     }
 
     public InsCurso(Integer codigo) {

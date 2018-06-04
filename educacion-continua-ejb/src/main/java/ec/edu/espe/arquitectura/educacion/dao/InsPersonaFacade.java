@@ -7,7 +7,6 @@ package ec.edu.espe.arquitectura.educacion.dao;
 
 import ec.edu.espe.arquitectura.educacion.model.InsPersona;
 import java.util.List;
-import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -18,7 +17,6 @@ import javax.persistence.Query;
  * @author js_cm
  */
 @Stateless
-@LocalBean
 public class InsPersonaFacade extends AbstractFacade<InsPersona> {
 
     @PersistenceContext(unitName = "educacion_continua-evaluacion_docente")
@@ -33,10 +31,10 @@ public class InsPersonaFacade extends AbstractFacade<InsPersona> {
         super(InsPersona.class);
     }
 
-       public List<InsPersona> buscarPorCodigo(String codProf) {
+    public List<InsPersona> buscarPorCodigo(String codProf) {
         Query qry = this.em.createQuery("SELECT obj FROM InsPersona obj WHERE obj.codigo=?1");
         qry.setParameter(1, codProf);
         return qry.getResultList();
     }
-    
+
 }

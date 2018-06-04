@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//ES"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <ui:composition template="/templates/plantillaAdmin.xhtml">
+        <ui:define name="contenido">
+            <p:panel id="mainPnl" header="AREAS" style="width: 50%; margin: auto;">
+
+                <p:dataTable var="clase" value="#{horarioBean.clases}"
+                             selectionMode="single" selection="#{horarioBean.clase}" rowKey="#{clase.codigo.codClase}">
+                    <p:ajax event="rowSelect"  listener="#{horarioBean.verHorario()}"  />
+                    <p:ajax event="rowUnselect" listener="#{horarioBean.onRowUnselect}"  />
+
+                    <p:column headerText="Nombre">
+                        <h:outputText value="#{clase.insCurso.descripcion}" />
+                    </p:column>
+                    <p:column headerText="Modalidad">
+                        <h:outputText value="#{clase.modalidad}" />
+                    </p:column>
+                    <p:column headerText="Fecha Inicio">
+                        <h:outputText value="#{horarioBean.formatoFecha(clase.fecIni)}"/>
+                    </p:column><p:column headerText="Fecha Fin">
+                        <h:outputText value="#{horarioBean.formatoFecha(clase.fecFin)}"/>
+                    </p:column>
+                </p:dataTable>
+                <p:commandButton  icon="ui-icon-search" value="Ver horario" actionListener="#{horarioBean.verHorario()}" update="@form"/>
+
+                <p:panel  id="horarioClase" header="Horarios de clase" rendered="#{horarioBean.isHorario}">
+                    <p:dataTable var="horario" value="#{horarioBean.horarios}"
+                                 selectionMode="single" selection="#{horarioBean.horario}" rowKey="#{horario.codigo}">
+                        <p:ajax event="rowSelect"  listener="#{horarioBean.verHorarioDet()}"  />
+                        <p:ajax event="rowUnselect" listener="#{horarioBean.onRowUnselect}"  />
+
+                        <p:column headerText="Aula">
+                            <h:outputText value="#{horario.insAula.descripcion}" />
+                        </p:column>
+                        <p:column headerText="Franja">
+                            <h:outputText value="#{horarioBean.formatoHora(horario.insFranja)}" />
+                        </p:column>
+                        <p:column headerText="Dia">
+                            <h:outputText value="#{horarioBean.horarioDia(horario)}"/>
+                        </p:column>
+                    </p:dataTable>
+                    <p:commandButton value="Agregar" actionListener="#{horarioBean.verHorarioDet()}" update="@form"/>
+                    <p:commandButton value="Eliminar" actionListener="#{horarioBean.eliminar()}" update="@form" />
+                </p:panel>
+
+                <p:panel  id="horarioClaseDet" header="Detalle" rendered="#{horarioBean.isHorarioDet}">
+                    <h:panelGrid columns="2" cellpadding="5">
+                        <p:outputLabel for="tipo" value="Tipo Aula:  " />
+                        <p:selectOneMenu id="tipo" value="#{ horarioBean.aulaTipo }" style="width:100%">
+                            <p:ajax listener="#{horarioBean.cargarAulas()}" update="aula" />
+                            <f:selectItem itemLabel="Seleccione" itemValue="" />
+                            <f:selectItems value="#{horarioBean.aulasTipos}" />
+                        </p:selectOneMenu>
+                        <p:outputLabel for="aula" value="Aulas:    " />
+                        <p:selectOneMenu id="aula" value="#{ horarioBean.horario.insAula.codigo }" style="width:100%">
+                            <f:selectItem itemLabel="Seleccionar" />
+                            <f:selectItems  value="#{horarioBean.aulasFilt }"  var="aula" itemLabel="#{ aula.descripcion }" itemValue="#{aula.codigo}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel for="franja" value="Franjas:   " />
+                        <p:selectOneMenu id="franja" value="#{horarioBean.horario.insFranja.codigo}"  style="width:100%">
+                            <f:selectItem  itemLabel="Seleccionar" />
+                            <f:selectItems value="#{horarioBean.franjas}" var="franja"  itemLabel="#{horarioBean.formatoHora(franja)}" itemValue="#{franja.codigo}"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel for="dia" value="Dias:   " />
+                        <p:selectOneMenu   id="dia" value="#{horarioBean.dia}"  style="width:100%">
+                            <f:selectItem itemLabel="#{ horarioBean.horarioDia(null) }" itemValue="#{horarioBean.dia}" />
+                            <f:selectItems value="#{horarioBean.diasList()}" />
+                        </p:selectOneMenu>
+
+
+                    </h:panelGrid>
+                    <p:commandButton value="Aceptar" actionListener="#{horarioBean.guardar()}" update="@form" />
+                    <p:commandButton value="Cancelar" actionListener="#{horarioBean.verHorario()}" update="@form" immediate="true"/>
+                </p:panel>
+            </p:panel>
+
+        </ui:define>
+    </ui:composition>
+</html>

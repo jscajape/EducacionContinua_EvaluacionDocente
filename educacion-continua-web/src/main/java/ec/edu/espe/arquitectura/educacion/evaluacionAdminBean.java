@@ -4,17 +4,26 @@
  * and open the template in the editor.
  */
 package ec.edu.espe.arquitectura.educacion;
+import ec.edu.espe.arquitectura.educacion.model.EvaCuestionario;
+import ec.edu.espe.arquitectura.educacion.model.EvaEvaluacion;
 import ec.edu.espe.arquitectura.educacion.model.EvaPregunta;
+import ec.edu.espe.arquitectura.educacion.model.EvaRespuestaCuestionario;
 import ec.edu.espe.arquitectura.educacion.model.EvaRespuestaPregunta;
 import ec.edu.espe.arquitectura.educacion.model.InsClase;
+import ec.edu.espe.arquitectura.educacion.model.InsCurso;
+import ec.edu.espe.arquitectura.educacion.model.InsPersona;
 import ec.edu.espe.arquitectura.educacion.model.InsPersonaUsuario;
 import ec.edu.espe.arquitectura.educacion.model.SegRol;
+import ec.edu.espe.arquitectura.educacion.service.EvaDetalleEvaluacionService;
+import ec.edu.espe.arquitectura.educacion.service.EvaEvaluacionService;
 import ec.edu.espe.arquitectura.educacion.service.InsClaseService;
 import ec.edu.espe.arquitectura.educacion.service.InsPersonaUsuarioService;
 import ec.edu.espe.arquitectura.educacion.service.SegRolService;
 import ec.edu.espe.arquitectura.educacion.service.EvaPreguntaService;
+import ec.edu.espe.arquitectura.educacion.service.EvaRespuestaCuestionarioService;
 import ec.edu.espe.arquitectura.educacion.service.InsPersonaService;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
@@ -29,7 +38,8 @@ import javax.inject.Inject;
 @ViewScoped
 public class evaluacionAdminBean implements Serializable {
 
-    //Roles del Usuario
+    private InsPersona persona;
+//Roles del Usuario
     private String rolBusqueda;
     private List<InsPersonaUsuario> rolesUsuarioPersona;
     private List<SegRol> rolesLista;
@@ -37,12 +47,17 @@ public class evaluacionAdminBean implements Serializable {
     //Clases Del Usuario
     private String codClase;
     private List<InsClase> clasesEvaluacion;
+    private InsClase claseSeleccionada;
+    private InsCurso cursoDeClaseSeleccionada;
+    private EvaCuestionario evaCuestionario;
     
     //Cuestionario
     private Boolean cuestionarioBand;
     private List<EvaPregunta> evaPreguntas;
-    private List<EvaRespuestaPregunta> evaRespuestas;
+    private List<EvaRespuestaPregunta> evaRespuestas =new ArrayList<>();
     private Integer respPregunta;
+    private EvaRespuestaCuestionario evaRespCuest;
+    private EvaEvaluacion evaEvaluacion;
     
     
     @Inject
@@ -63,6 +78,15 @@ public class evaluacionAdminBean implements Serializable {
     @Inject
     private InsPersonaService personaService;
     
+    @Inject
+    private EvaRespuestaCuestionarioService respuestaCuestionarioService;
+    
+    @Inject
+    private EvaEvaluacionService evaEvaluacionService;
+    
+    @Inject
+    private EvaDetalleEvaluacionService evaDetEvalService;
+    
     @PostConstruct
     public void init() {
         
@@ -70,12 +94,14 @@ public class evaluacionAdminBean implements Serializable {
         
         //this.rolesUsuarioPersona = this.perUsService.obtenerPorUsuario("1713627071"); //CAMBIAR POR CODIGO DE USUARIO
         this.rolesUsuarioPersona = this.perUsService.obtenerPorUsuario(usuario.getUsuario().getCodigo()); //CAMBIAR POR CODIGO DE USUARIO"1713627071"
-        this.rolesLista=this.rolServicio.listaPorId(this.rolesUsuarioPersona);       
+        this.rolesLista=this.rolServicio.listaPorId(this.rolesUsuarioPersona);     
+        
+        this.persona=this.personaService.obtenerPorCodigo(usuario.getUsuario().getCodigo());
         
        String auxRol=rolesLista.get(0).getCodigo();
        this.actualizarClases(auxRol);
        
-       
+       this.evaEvaluacion=evaEvaluacionService.porId("EVA0001");
         
     }
       
@@ -151,6 +177,22 @@ public class evaluacionAdminBean implements Serializable {
     public void setRespPregunta(Integer respPregunta) {
         this.respPregunta = respPregunta;
     }
+
+    public InsClase getClaseSeleccionada() {
+        return claseSeleccionada;
+    }
+
+    public void setClaseSeleccionada(InsClase claseSeleccionada) {
+        this.claseSeleccionada = claseSeleccionada;
+    }
+
+    public InsPersona getPersona() {
+        return persona;
+    }
+
+    public void setPersona(InsPersona persona) {
+        this.persona = persona;
+    }
     
     
     
@@ -186,7 +228,8 @@ public class evaluacionAdminBean implements Serializable {
                 }
             }
         }
-        
+        //System.out.println("a ver si entra!");
+        this.claseSeleccionada=this.clasesEvaluacion.get(0);
         this.cuestionarioBand=false;
         
     }
@@ -194,29 +237,63 @@ public class evaluacionAdminBean implements Serializable {
     
     public void cargarCuestionario()
     {
-        this.evaPreguntas=preguntaService.cargarCuestionario(this.rolBusqueda, "EVA0001");
+        this.evaPreguntas=preguntaService.cargarCuestionario(this.rolBusqueda, this.evaEvaluacion.getCodigo());
         //this.evaPreguntas=preguntaService.todas();
-        System.out.println("A ver si trae preguntas!");
-        
-        
+       
+        this.evaRespuestas.clear();
+        //Para crear lista de respuestas
+        System.out.println(evaPreguntas.size());
         for(int i=0;i<evaPreguntas.size();i++)
         {
-            //System.out.println(evaPreguntas.get(i).getEnunciado());
-            //evaRespuestas.add(new EvaRespuestaPregunta());
+            this.evaRespuestas.add(new EvaRespuestaPregunta(40+i,0,persona,evaPreguntas.get(i)));
         }
         
+        this.evaCuestionario=this.evaPreguntas.get(0).getEvaCuestionario();
         this.cuestionarioBand=true;
     }
     
     public void guardarEvaluacion()
     {
+        //evaCuestionario=this.evaPreguntas.get(0).getEvaCuestionario();
+        
+        //Posibilidad de Errore
+        /*EvaRespuestaCuestionario evaRespCuest = new EvaRespuestaCuestionario();
+        evaRespCuest.setInsPersona(persona);
+        evaRespCuest.setCodigo(new EvaRespuestaCuestionarioPK(persona.getCodigo(),evaEvaluacion.getCodigo(),evaCuestionario.getCodigo(),claseSeleccionada.getCodigo().getCodClase()));
+        evaRespCuest.setEvaDetalleEvaluacon(evaDetEvalService.porId(evaCuestionario.getCodigo(), evaEvaluacion.getCodigo()));
+        evaRespCuest.setInsClase(claseSeleccionada);
+        evaRespCuest.setInsPersona(persona);
+        evaRespCuest.setFecha(new Date());
+        evaRespCuest.setCalificacionPromedio(BigDecimal.ZERO);*/
+        respuestaCuestionarioService.guardarRespuesta(evaRespuestas);
+        //.
+        
         
         this.cuestionarioBand=false;        
     }
     
     public void guardarRespuesta(Integer numIndex)
     {
-        //this.evaRespuestas.get(numIndex).setRespuesta(respPregunta);
+        this.evaRespuestas.get(numIndex).setRespuesta(respPregunta); 
+        System.out.println("Respuesta seteada: "+this.evaRespuestas.get(numIndex).getRespuesta());
+    }
+    
+    
+
+    public void actualizarDocente(String codigoClase)
+    {
+        //Para Saber Nombre de Profesor
+        for(int i=0;i<clasesEvaluacion.size();i++)
+        {
+            if(this.clasesEvaluacion.get(i).getCodigo().getCodClase().compareTo(codigoClase)==0)
+            {
+                this.claseSeleccionada=clasesEvaluacion.get(i);
+                this.cursoDeClaseSeleccionada=claseSeleccionada.getInsCurso();
+                //System.out.println("Clase DENTRO BUCLE: "+this.claseSeleccionada.getCodigo());
+                break;
+            }
+        }
+        //System.out.println("Clase FUERA: "+this.claseSeleccionada.getCodigo()+"  "+codigoClase);        
     }
     
     

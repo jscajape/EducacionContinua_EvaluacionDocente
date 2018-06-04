@@ -41,8 +41,6 @@ public class InsPersonaBean extends BaseBean implements Serializable {
     
     private String Estado;
     private String perfil;
-    
-    
 
     @Inject
     private InsPersonaService insPersonaService;
@@ -110,10 +108,7 @@ public class InsPersonaBean extends BaseBean implements Serializable {
         super.reset();
         this.insPersona = new InsPersona();
     }
-    public void ObtenerProfesores()
-    {
-        
-    }
+
     public void guardar() {
         try {
             this.insPersonaService.crear(this.insPersona);
@@ -140,7 +135,7 @@ public class InsPersonaBean extends BaseBean implements Serializable {
     public List<InsPersona> getInsPersonas() {
         return insPersonas;
     }
-   
+
     public void setInsPersonas(List<InsPersona> insPersonas) {
         this.insPersonas = insPersonas;
     }

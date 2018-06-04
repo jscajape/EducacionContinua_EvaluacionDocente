@@ -34,7 +34,6 @@ public class InsArea implements Serializable {
     
     @Column(name = "ESTADO", length = 3)
     @Enumerated(EnumType.STRING)
-    
     private EstadoAreaEnum estado;
 
     public InsArea() {

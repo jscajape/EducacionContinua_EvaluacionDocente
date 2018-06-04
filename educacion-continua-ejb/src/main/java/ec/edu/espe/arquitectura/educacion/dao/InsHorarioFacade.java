@@ -5,7 +5,10 @@
  */
 package ec.edu.espe.arquitectura.educacion.dao;
 
+import ec.edu.espe.arquitectura.educacion.model.InsClase;
 import ec.edu.espe.arquitectura.educacion.model.InsHorario;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -27,6 +30,13 @@ public class InsHorarioFacade extends AbstractFacade<InsHorario> {
 
     public InsHorarioFacade() {
         super(InsHorario.class);
+    }
+    public List<InsHorario> buscarPorClase(InsClase clase)
+    {
+        List<InsHorario> horarios=super.findAll();
+        return horarios.stream().filter(x -> x.getInsClase().getCodigo().getCodClase().equals(
+               clase.getCodigo().getCodClase()
+            )).collect(Collectors.toList());
     }
     
 }
