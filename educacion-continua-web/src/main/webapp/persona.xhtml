@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//ES" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <ui:composition template="/templates/plantillaAdmin.xhtml">
+        <ui:define name="contenido">
+            <p:panel id="mainPnl" header="Agregar Persona" style="width: 90%; margin: auto;">
+                <p:dataTable var="persona" value="#{insPersonaBean.insPersonas}" selectionMode="single" rows="10" style="width:1400px"
+                             selection="#{insPersonaBean.insPersonaSel}" rowKey="#{persona.codigo}" paginator="true"
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+                    <p:ajax event="rowSelect" update="@form" />
+                    <p:ajax event="rowUnselect" update="@form" />
+                    <p:column headerText="Identificacion / Codigo">
+                        <h:outputText value="#{persona.codigo}" />
+                    </p:column>
+                    <p:column headerText="Nombre">
+                        <h:outputText value="#{persona.nombre}" />
+                    </p:column>
+                    <p:column headerText="Apellido">
+                        <h:outputText value="#{persona.apellido}" />
+                    </p:column>
+                    <p:column headerText="Fecha de Nacimiento">
+                        <h:outputText value="#{persona.fecNac}" />
+                    </p:column>
+                    <p:column headerText="Genero">
+                        <h:outputText value="#{persona.genero}" />
+                    </p:column>
+                    <p:column headerText="Direccion">
+                        <h:outputText value="#{persona.direccion}" />
+                    </p:column>
+                    <p:column headerText="Telefono">
+                        <h:outputText value="#{persona.telefono}" />
+                    </p:column>
+                    <p:column headerText="ESTADO">
+                        <h:outputText value="#{persona.estado}" />
+                    </p:column>
+                </p:dataTable>
+                <p:commandButton value="Agregar" actionListener="#{insPersonaBean.agregar()}" update="@form"/>
+                <p:commandButton id="modBtn" value="Modificar" actionListener="#{insPersonaBean.modificar()}" update="@form" disabled="#{insPersonaBean.insPersonaSel eq null}"/>
+                <p:commandButton value="Eliminar" actionListener="#{insPersonaBean.eliminar()}" update="@form" disabled="#{insPersonaBean.insPersonaSel eq null}">
+                    <p:confirm header="Confirmaci&#243;n" message="Desea eliminar la persona de nombre de nombre: #{insPersonaBean.insPersonaSel.nombre}" icon="ui-icon-alert" />
+                </p:commandButton>
+                <p:panel header="Registrar Persona" rendered="#{insPersonaBean.habilitaForm}">
+                    <p:panelGrid columns="3">
+                        <p:outputLabel for="codigo" value="Identificaci&#243;n" />
+                        <p:inputText id="codigo" value="#{insPersonaBean.insPersona.codigo}" disabled="#{insPersonaBean.enModificar}" required="true" requiredMessage="Debe ingresar el codigo"/>
+                        <p:message for="codigo" />
+                        <p:outputLabel for="nombre" value="Nombre" />
+                        <p:inputText id="nombre" value="#{insPersonaBean.insPersona.nombre}"  required="true" requiredMessage="Debe ingresara la descripcion"/>
+                        <p:message for="nombre" />
+                        <p:outputLabel for="apellido" value="Apellido" />
+                        <p:inputText id="apellido" value="#{insPersonaBean.insPersona.apellido}"  required="true" requiredMessage="Debe ingresara la descripcion"/>
+                        <p:message for="apellido" />
+                        <p:outputLabel for="direccion" value="Direcci&#243;n" />
+                        <p:inputText id="direccion" value="#{insPersonaBean.insPersona.direccion}"  required="true" requiredMessage="Debe ingresara la descripcion"/>
+                        <p:message for="direccion" />
+                        <p:outputLabel for="genero" value="Genero" />
+                        <p:selectOneMenu id="genero" value="#{insPersonaBean.insPersona.genero}" style="width:125px" required="true" requiredMessage="Debe ingresara la descripcion">
+                            <f:selectItem itemLabel="MASCULINO" itemValue="M" />
+                            <f:selectItem itemLabel="FEMENINO" itemValue="F" />
+                        </p:selectOneMenu>
+                        <p:message for="genero" />
+                        <p:outputLabel for="telefono" value="Tel&#233;fono" />
+                        <p:inputText id="telefono" value="#{insPersonaBean.insPersona.telefono}"  required="true" requiredMessage="Debe ingresara la descripcion"/>
+                        <p:message for="telefono"/>
+                        <p:outputLabel for="fechaNacimiento" value="Fecha Nacimiento" />
+                        <p:calendar id="fechaNacimiento" value="#{insPersonaBean.insPersona.fecNac}" required="true" requiredMessage="Debe ingresara la fecha de nacimiento" showOn="button" pattern="MM/dd/yyyy"/>
+                        <p:message for="fechaNacimiento" />
+                        <p:outputLabel for="estado" value="Estado" rendered="#{insPersonaBean.enModificar}"/>
+                        <p:selectOneMenu id="estado" value="#{insPersonaBean.estado}" style="width:125px" rendered="#{insPersonaBean.enModificar}">
+                            <f:selectItem itemLabel="ACTIVO" itemValue="ACT" />
+                            <f:selectItem itemLabel="INACTIVO" itemValue="INA" />
+                        </p:selectOneMenu>
+                        <p:message for="estado" />
+                    </p:panelGrid>
+                    <p:commandButton value="Aceptar" actionListener="#{insPersonaBean.guardar}" update="@form" />
+                    <p:commandButton value="Cancelar" actionListener="#{insPersonaBean.cancelar}" update="@form" immediate="true"/>
+                </p:panel>
+            </p:panel>
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
+        </ui:define>
+    </ui:composition>
+</html>

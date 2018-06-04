@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      >
+    <h:head>
+        <title>EDUCACION CONTINUA</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link href="#{facesContext.externalContext.requestContextPath}/images/styles.css" rel="stylesheet"/>
+        <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" integrity="sha256-MfvZlkHCEqatNoGiOXveE8FIwMzZg4W85qfrfIFBfYc= sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous"/>
+    </h:head>
+    <h:body> 
+        <div id="page">
+            <div class="header">
+                <img src="#{facesContext.externalContext.requestContextPath}/images/banner.jpg" height="100%" class="img-responsive" />
+            </div>
+            <div id="content">
+                <h:form>
+                    <p:growl id="messages"/>
+                    <p:menubar>
+                        <p:submenu label="Alumno">                           
+                        </p:submenu>
+                        <p:submenu label="Facturacion">                           
+                        </p:submenu>  
+                        <p:submenu label="Evaluacion Docente" >
+                            <p:menuitem value="Realizar Evalacion" action="tipoEvaluacionDocente" />
+                        </p:submenu>
+                        <p:menuitem value="#{usuarioSesionBean.nombre}" url="#" style="margin-right:10px"/>
+                        <p:menuitem value="Salir" icon="ui-icon-extlink" action="#{indexBean.logout()}" />
+                    </p:menubar>
+                    <p:spacer height="10px"/>
+                    <ui:insert name="contenido">
+
+                    </ui:insert>
+                    <p>&nbsp;</p>
+                </h:form>
+            </div>
+            <div id="footer">
+                <div class="text-center center-block">
+                    <a href=""><i id="social-fb" class="fa fa-facebook-square fa-3x social"></i></a>
+                    <a href=""><i id="social-tw" class="fa fa-twitter-square fa-3x social"></i></a>
+                    <a href=""><i id="social-gp" class="fa fa-google-plus-square fa-3x social"></i></a>
+                    <a href=""><i id="social-em" class="fa fa-envelope-square fa-3x social"></i></a>
+                </div>
+                <div class="text-center center-block">
+                    <p class="txt-railway">Copyright © EDUCACION CONTINUA 2018</p>
+                    <p class="txt-railway">NRC: 3747</p>
+                    <p class="txt-railway">Tutor: HENRY RAMIRO CORAL CORAL </p>
+                </div>
+            </div>
+        </div>
+    </h:body>
+</html>
