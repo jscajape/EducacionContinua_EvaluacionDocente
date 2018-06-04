@@ -11,7 +11,7 @@ import ec.edu.espe.arquitectura.educacion.model.InsFranja;
 import ec.edu.espe.arquitectura.educacion.model.InsClase;
 import ec.edu.espe.arquitectura.educacion.model.InsHorario;
 import ec.edu.espe.arquitectura.educacion.model.InsHorarioPK;
-import ec.edu.espe.arquitectura.educacion.service.InsAulaService;
+import ec.edu.espe.arquitectura.educacion.service.AulaService;
 import ec.edu.espe.arquitectura.educacion.service.FranjaService;
 import ec.edu.espe.arquitectura.educacion.service.HorarioService;
 import ec.edu.espe.arquitectura.educacion.service.InsClaseService;
@@ -70,7 +70,7 @@ public class HorarioBean extends BaseBean implements Serializable {
     @Inject
     private InsClaseService claseService;
     @Inject
-    private InsAulaService aulaService;
+    private AulaService aulaService;
 
     @PostConstruct
     public void init() {
@@ -285,11 +285,11 @@ public class HorarioBean extends BaseBean implements Serializable {
         this.franjaService = franjaService;
     }
 
-    public InsAulaService getAulaService() {
+    public AulaService getAulaService() {
         return aulaService;
     }
 
-    public void setAulaService(InsAulaService aulaService) {
+    public void setAulaService(AulaService aulaService) {
         this.aulaService = aulaService;
     }
 
