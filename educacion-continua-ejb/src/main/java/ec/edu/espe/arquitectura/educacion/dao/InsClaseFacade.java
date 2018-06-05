@@ -54,6 +54,12 @@ public class InsClaseFacade extends AbstractFacade<InsClase> {
         
         return (String)qry;
     }*/
+ 
+    /* public String buscarMax() {
+        Query qry = this.em.createQuery("SELECT obj FROM InsClase obj where obj.codigo  =  (SELECT max(obj.codigo) FROM InsClase)");
+        
+        return (String)qry;
+    }*/
     public List<InsClase> buscarPorEstudiante(String codEstudiante) {
         List<InsMatricula> listaMatricula = new ArrayList<InsMatricula>();
         List<InsClase> listaClases = new ArrayList<InsClase>();
