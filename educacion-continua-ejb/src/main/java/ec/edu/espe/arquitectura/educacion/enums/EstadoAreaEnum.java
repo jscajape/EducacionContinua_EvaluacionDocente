@@ -15,9 +15,10 @@ public enum EstadoAreaEnum {
     
     ACT	("ACTIVO"),
     INA("INACTIVO"),
-    OCU("OCUPADA"),
-    DES("DESOCPADA");
-    //ABI("ABIERTA");
+    //OCU("OCUPADA"),
+   // DES("DESOCPADA");
+    ABI("ABIERTA"),
+    CER("CERRADA");
     private String texto;
 
     private EstadoAreaEnum(String texto) {

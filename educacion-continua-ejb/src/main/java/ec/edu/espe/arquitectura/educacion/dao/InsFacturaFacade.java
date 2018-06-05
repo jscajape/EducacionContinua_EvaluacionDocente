@@ -6,9 +6,11 @@
 package ec.edu.espe.arquitectura.educacion.dao;
 
 import ec.edu.espe.arquitectura.educacion.model.InsFactura;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -27,6 +29,12 @@ public class InsFacturaFacade extends AbstractFacade<InsFactura> {
 
     public InsFacturaFacade() {
         super(InsFactura.class);
+    }
+    
+    public List<InsFactura> PorCodigo(String codigo) {
+        Query qry = this.em.createQuery("SELECT obj FROM InsFactura obj WHERE obj.codigo=?1");
+        qry.setParameter(1, codigo);
+        return qry.getResultList();
     }
     
 }

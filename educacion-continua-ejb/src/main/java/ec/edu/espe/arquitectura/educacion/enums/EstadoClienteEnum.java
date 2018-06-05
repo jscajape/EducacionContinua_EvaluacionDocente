@@ -16,7 +16,7 @@ public enum EstadoClienteEnum {
     NUE("NUEVO"),
     REG("REGISTRADO");
 
-    String texto;
+    private String texto;
 
     private EstadoClienteEnum(String texto) {
         this.texto = texto;
