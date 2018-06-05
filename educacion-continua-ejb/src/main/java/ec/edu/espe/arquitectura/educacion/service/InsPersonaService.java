@@ -45,5 +45,9 @@ public class InsPersonaService {
     public void eliminar(String codigo) {
         InsPersona insPersona = this.insPersonaFacade.find(codigo);
         this.insPersonaFacade.remove(insPersona);
-    } 
+    }
+    
+    public InsPersona obtenerPorCodigo(String cod) {
+        return this.insPersonaFacade.buscarPorCodigo(cod).get(0);
+    }
 }

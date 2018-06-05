@@ -4,17 +4,31 @@
  * and open the template in the editor.
  */
 package ec.edu.espe.arquitectura.educacion;
+
+import ec.edu.espe.arquitectura.educacion.model.EvaCuestionario;
+import ec.edu.espe.arquitectura.educacion.model.EvaEvaluacion;
 import ec.edu.espe.arquitectura.educacion.model.EvaPregunta;
+import ec.edu.espe.arquitectura.educacion.model.EvaRespuestaCuestionario;
+import ec.edu.espe.arquitectura.educacion.model.EvaRespuestaCuestionarioPK;
 import ec.edu.espe.arquitectura.educacion.model.EvaRespuestaPregunta;
 import ec.edu.espe.arquitectura.educacion.model.InsClase;
+import ec.edu.espe.arquitectura.educacion.model.InsCurso;
+import ec.edu.espe.arquitectura.educacion.model.InsPersona;
 import ec.edu.espe.arquitectura.educacion.model.InsPersonaUsuario;
 import ec.edu.espe.arquitectura.educacion.model.SegRol;
+import ec.edu.espe.arquitectura.educacion.service.EvaDetalleEvaluacionService;
+import ec.edu.espe.arquitectura.educacion.service.EvaEvaluacionService;
 import ec.edu.espe.arquitectura.educacion.service.InsClaseService;
 import ec.edu.espe.arquitectura.educacion.service.InsPersonaUsuarioService;
 import ec.edu.espe.arquitectura.educacion.service.SegRolService;
 import ec.edu.espe.arquitectura.educacion.service.EvaPreguntaService;
+import ec.edu.espe.arquitectura.educacion.service.EvaRespuestaCuestionarioService;
+import ec.edu.espe.arquitectura.educacion.service.EvaRespuestaPreeguntaService;
 import ec.edu.espe.arquitectura.educacion.service.InsPersonaService;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
@@ -29,56 +43,78 @@ import javax.inject.Inject;
 @ViewScoped
 public class evaluacionAdminBean implements Serializable {
 
-    //Roles del Usuario
+    private InsPersona persona;
+//Roles del Usuario
     private String rolBusqueda;
     private List<InsPersonaUsuario> rolesUsuarioPersona;
     private List<SegRol> rolesLista;
-    
+
     //Clases Del Usuario
     private String codClase;
     private List<InsClase> clasesEvaluacion;
-    
+    private InsClase claseSeleccionada;
+    private InsCurso cursoDeClaseSeleccionada;
+    private EvaCuestionario evaCuestionario;
+
     //Cuestionario
     private Boolean cuestionarioBand;
     private List<EvaPregunta> evaPreguntas;
-    private List<EvaRespuestaPregunta> evaRespuestas;
+    private List<EvaRespuestaPregunta> evaRespuestas = new ArrayList<>();
     private Integer respPregunta;
-    
-    
+    private EvaRespuestaCuestionario evaRespCuest;
+    private EvaEvaluacion evaEvaluacion;
+    private List<EvaRespuestaPregunta> codigoRespuestas;
+
     @Inject
     private UsuarioSesionBean usuario;
-    
+
     @Inject
     private InsPersonaUsuarioService perUsService;
-    
+
     @Inject
     private SegRolService rolServicio;
-    
+
     @Inject
     private InsClaseService claseService;
-    
+
     @Inject
     private EvaPreguntaService preguntaService;
-    
+
     @Inject
     private InsPersonaService personaService;
+
+    @Inject
+    private EvaRespuestaCuestionarioService respuestaCuestionarioService;
+
+    @Inject
+    private EvaEvaluacionService evaEvaluacionService;
+
+    @Inject
+    private EvaDetalleEvaluacionService evaDetEvalService;
     
+    @Inject
+    private EvaRespuestaPreeguntaService evaRespuestaPreeguntaService;
+    
+
     @PostConstruct
     public void init() {
-        
-        this.cuestionarioBand=false;
-        
+
+        this.cuestionarioBand = false;
+
         //this.rolesUsuarioPersona = this.perUsService.obtenerPorUsuario("1713627071"); //CAMBIAR POR CODIGO DE USUARIO
         this.rolesUsuarioPersona = this.perUsService.obtenerPorUsuario(usuario.getUsuario().getCodigo()); //CAMBIAR POR CODIGO DE USUARIO"1713627071"
-        this.rolesLista=this.rolServicio.listaPorId(this.rolesUsuarioPersona);       
+        this.rolesLista = this.rolServicio.listaPorId(this.rolesUsuarioPersona);
+
+        this.persona = this.personaService.obtenerPorCodigo(usuario.getUsuario().getCodigo());
+
+        String auxRol = rolesLista.get(0).getCodigo();
+        this.actualizarClases(auxRol);
         
-       String auxRol=rolesLista.get(0).getCodigo();
-       this.actualizarClases(auxRol);
-       
-       
-        
+        this.codigoRespuestas = this.evaRespuestaPreeguntaService.obtenerTodos();
+
+        this.evaEvaluacion = evaEvaluacionService.porId("EVA0001");
+
     }
-      
 
     public String getRolBusqueda() {
         return rolBusqueda;
@@ -86,7 +122,7 @@ public class evaluacionAdminBean implements Serializable {
 
     public void setRolBusqueda(String rolBusqueda) {
         this.rolBusqueda = rolBusqueda;
-    }    
+    }
 
     public List<SegRol> getRolesLista() {
         return rolesLista;
@@ -151,73 +187,103 @@ public class evaluacionAdminBean implements Serializable {
     public void setRespPregunta(Integer respPregunta) {
         this.respPregunta = respPregunta;
     }
-    
-    
-    
-       
-    
-    public void actualizarClases(String rol)
-    {
+
+    public InsClase getClaseSeleccionada() {
+        return claseSeleccionada;
+    }
+
+    public void setClaseSeleccionada(InsClase claseSeleccionada) {
+        this.claseSeleccionada = claseSeleccionada;
+    }
+
+    public InsPersona getPersona() {
+        return persona;
+    }
+
+    public void setPersona(InsPersona persona) {
+        this.persona = persona;
+    }
+
+    public void actualizarClases(String rol) {
         //this.clasesEvaluacion=this.claseService.obtenerTodos();
-        
-        if(rol.compareTo("R001")==0)
-        {
+
+        if (rol.compareTo("R001") == 0) {
             //Estudiante
-            this.clasesEvaluacion=this.claseService.obtenerClasesMatricula(usuario.getUsuario().getCodigo());
+            this.clasesEvaluacion = this.claseService.obtenerClasesMatricula(usuario.getUsuario().getCodigo());
+        } else if (rol.compareTo("R002") == 0) {
+            //Docente
+            this.clasesEvaluacion = this.claseService.obtenerClasesDocente(usuario.getUsuario().getCodigo());
+        } else if (rol.compareTo("R004") == 0) {
+            //Directivo
+            this.clasesEvaluacion = this.claseService.obtenerTodos();
+        } else {
+            //Resto de Roles
+            this.clasesEvaluacion = null;
         }
-        else
-        {
-            if(rol.compareTo("R002")==0)
-            {
-                //Docente
-                this.clasesEvaluacion=this.claseService.obtenerClasesDocente(usuario.getUsuario().getCodigo());
-            }
-            else
-            {
-                if(rol.compareTo("R004")==0)
-                {
-                    //Directivo
-                    this.clasesEvaluacion=this.claseService.obtenerTodos();
-                }
-                else
-                {
-                    //Resto de Roles
-                    this.clasesEvaluacion=null;
-                }
-            }
-        }
-        
-        this.cuestionarioBand=false;
-        
+        //System.out.println("a ver si entra!");
+        this.claseSeleccionada = this.clasesEvaluacion.get(0);
+        this.cuestionarioBand = false;
+
     }
-    
-    
-    public void cargarCuestionario()
-    {
-        this.evaPreguntas=preguntaService.cargarCuestionario(this.rolBusqueda, "EVA0001");
+
+    public void cargarCuestionario() {
+        this.evaPreguntas = preguntaService.cargarCuestionario(this.rolBusqueda, this.evaEvaluacion.getCodigo());
         //this.evaPreguntas=preguntaService.todas();
-        System.out.println("A ver si trae preguntas!");
-        
-        
-        for(int i=0;i<evaPreguntas.size();i++)
-        {
-            //System.out.println(evaPreguntas.get(i).getEnunciado());
-            //evaRespuestas.add(new EvaRespuestaPregunta());
+
+        this.evaRespuestas.clear();
+        //Para crear lista de respuestas
+        Integer auxiliarCodigo = this.codigoRespuestas.size() + 1;
+        System.out.println(evaPreguntas.size());
+        for (int i = 0; i < evaPreguntas.size(); i++) {
+            this.evaRespuestas.add(new EvaRespuestaPregunta( auxiliarCodigo + i, 0, persona, evaPreguntas.get(i)));
         }
-        
-        this.cuestionarioBand=true;
+
+        this.evaCuestionario = this.evaPreguntas.get(0).getEvaCuestionario();
+        this.cuestionarioBand = true;
     }
-    
-    public void guardarEvaluacion()
-    {
-        
-        this.cuestionarioBand=false;        
+
+    public void guardarEvaluacion() {
+        EvaRespuestaCuestionario evaRespCuest = new EvaRespuestaCuestionario();
+
+        EvaRespuestaCuestionarioPK codigoRespuestaCuestionario = new EvaRespuestaCuestionarioPK();
+        codigoRespuestaCuestionario.setCodClase(codClase);
+        codigoRespuestaCuestionario.setCodCuestionario(this.evaCuestionario.getCodigo());
+        codigoRespuestaCuestionario.setCodEvaluacion(evaEvaluacion.getCodigo());
+        codigoRespuestaCuestionario.setCodPersona(persona.getCodigo());
+
+        evaRespCuest.setFecha(new Date());
+        evaRespCuest.setCodigo(codigoRespuestaCuestionario);
+
+        float sum = 0.0f;
+        for (EvaRespuestaPregunta obj : evaRespuestas) {
+            System.out.println(obj.getRespuesta());
+            this.evaRespuestaPreeguntaService.crear(obj);
+            sum += (float) obj.getRespuesta();
+        }
+        sum = (sum / (float) evaRespuestas.size());
+        BigDecimal bd = BigDecimal.valueOf((double) sum);
+
+        evaRespCuest.setCalificacionPromedio(bd);
+        this.respuestaCuestionarioService.guardar(evaRespCuest);
+        this.cuestionarioBand = false; 
     }
-    
-    public void guardarRespuesta(Integer numIndex)
-    {
-        //this.evaRespuestas.get(numIndex).setRespuesta(respPregunta);
+
+    public void guardarRespuesta(Integer numIndex) {
+        this.evaRespuestas.get(numIndex).setRespuesta(respPregunta);
+        System.out.println("Respuesta seteada: " + this.evaRespuestas.get(numIndex).getRespuesta());
     }
-    
-    
+
+    public void actualizarDocente(String codigoClase) {
+        //Para Saber Nombre de Profesor
+        for (int i = 0; i < clasesEvaluacion.size(); i++) {
+            if (this.clasesEvaluacion.get(i).getCodigo().getCodClase().compareTo(codigoClase) == 0) {
+                this.claseSeleccionada = clasesEvaluacion.get(i);
+                this.cursoDeClaseSeleccionada = claseSeleccionada.getInsCurso();
+                //System.out.println("Clase DENTRO BUCLE: "+this.claseSeleccionada.getCodigo());
+                break;
+            }
+        }
+        //System.out.println("Clase FUERA: "+this.claseSeleccionada.getCodigo()+"  "+codigoClase);        
+    }
+
 }

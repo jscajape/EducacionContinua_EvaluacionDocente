@@ -66,7 +66,7 @@
                             <f:selectItem itemLabel="BLOQUEADO" itemValue="BLO" />
                             <f:selectItem itemLabel="PENDIENTE" itemValue="PEN" />
                         </p:selectOneMenu>
-                        <p:outputLabel for="perfilCmb" value="Crucero:" />
+                        <p:outputLabel for="perfilCmb" value="Perfil: " />
                         <p:selectOneMenu id="perfilCmb" value="#{segUsuarioBean.perfil}" rendered="true">
                             <f:selectItems var="perfil" value="#{segUsuarioBean.segPerfiles}" itemLabel="#{perfil.nombre}" itemValue="#{perfil.codigo}" />
                         </p:selectOneMenu>
