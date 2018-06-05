@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//ES"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <ui:composition template="/templates/plantillaAdmin.xhtml">
+        <ui:define name="contenido">
+            <p:panelGrid columns="2" layout="grid">
+
+
+                <p:panel id="mainPnl" header="AREAS" style="width: 100%; margin: auto;">
+
+                    <p:outputLabel for="areasel" value="Areas:   " />
+                    <p:selectOneMenu id="areasel" value="#{ matriculaBean.codArea }"  style="width:100%">
+                        <p:ajax listener="#{matriculaBean.cargarClases()}" update="clasesAlmn" />
+                        <f:selectItem  itemLabel="Seleccionar" />
+                        <f:selectItems value="#{ matriculaBean.areas }" var="area"  itemLabel="#{ area.descripcion }" itemValue="#{area.codigo}"/>
+                    </p:selectOneMenu>
+
+
+                    <p:dataTable id="clasesAlmn"  var="clase" value="#{ matriculaBean.clases }"
+                                 selectionMode="single" selection="#{matriculaBean.clase}" rowKey="#{clase.codigo.codClase}">                 
+
+                        <p:column headerText="Nombre ">
+                            <h:outputText value="#{clase.insCurso.descripcion}" />
+                        </p:column>
+                        <p:column headerText="Modalidad" >
+                            <h:outputText value="#{clase.modalidad}" />
+                        </p:column>
+                        <p:column headerText="Fecha Inicio">
+                            <h:outputText value="#{matriculaBean.formatoFecha(clase.fecIni)}"/>
+                        </p:column><p:column headerText="Fecha Fin">
+                            <h:outputText value="#{matriculaBean.formatoFecha(clase.fecFin)}"/>
+                        </p:column>
+                    </p:dataTable>
+                    <p:commandButton  icon="ui-icon-plus" value="Agregar" actionListener="#{matriculaBean.agregarClase()}" update="@form"/>
+                </p:panel>
+
+                <p:panel  header="Cursos agregados para matricula " style="width: 100%; margin: auto;" >
+
+
+                    <p:dataTable  var="claseadd" value="#{ matriculaBean.clasesAgregardas }"
+                                  selectionMode="single" selection="#{matriculaBean.claseAdd}" rowKey="#{ claseadd.codigo.codClase }">
+                        <p:column headerText="Nombre">
+                            <h:outputText value="#{claseadd.insCurso.descripcion}" />
+                        </p:column>
+                        <p:column headerText="Modalidad">
+                            <h:outputText value="#{claseadd.modalidad }" />
+                        </p:column>
+                        <p:column headerText="Fecha Inicio">
+                            <h:outputText value="#{matriculaBean.formatoFecha(claseadd.fecIni)}"/>
+                        </p:column><p:column headerText="Fecha Fin">
+                            <h:outputText value="#{matriculaBean.formatoFecha(claseadd.fecFin)}"/>
+                        </p:column>
+                    </p:dataTable>
+                    <p:commandButton value="Aceptar" actionListener="#{matriculaBean.guardar()}" update="@form" />
+                    <p:commandButton value="Cancelar" actionListener="#{matriculaBean.cancelar()}" update="@form" immediate="true"/>
+                </p:panel>
+
+            </p:panelGrid>
+
+            <p:panel  header=" Cursos matriculados #{ matriculaBean.alumno.nombre }  #{ matriculaBean.alumno.apellido } " style="width: 70%; margin: auto;" >
+
+                <p:dataTable  var="matricula" value="#{ matriculaBean.matriculasAlumno}"
+                              selectionMode="single" selection="#{matriculaBean.claseMat}" rowKey="#{ matricula.insClase.codigo.codClase }">
+
+                    <p:column headerText="Nombre">
+                        <h:outputText value="#{matricula.insClase.insCurso.descripcion}" />
+                    </p:column>
+                    <p:column headerText="Fecha Matricula">
+                        <h:outputText value="#{matriculaBean.formatoFecha(matricula.fechaRealiza) }" />
+                    </p:column>
+                    <p:column headerText="Fecha Inicio">
+                        <h:outputText value="#{matriculaBean.formatoFecha(matricula.insClase.fecIni)}"/>
+                    </p:column><p:column headerText="Fecha Fin">
+                        <h:outputText value="#{matriculaBean.formatoFecha(matricula.insClase.fecFin)}"/>
+                    </p:column>
+                    <p:column headerText="Estado Matricula">
+                        <h:outputText value="#{matriculaBean.estadoMatrincula(matricula.estado)}" />
+                    </p:column>
+                </p:dataTable>
+                <p:commandButton value="Quitar" actionListener="#{matriculaBean.quitarMatricula()}" update="@form" />
+                <p:commandButton value="Detalles" actionListener="#{matriculaBean.cancelar()}" update="@form" immediate="true"/>
+            </p:panel>
+
+        </ui:define>
+    </ui:composition>
+</html>

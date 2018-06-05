@@ -44,12 +44,13 @@ import org.primefaces.event.UnselectEvent;
 public class HorarioBean extends BaseBean implements Serializable {
 
     private List<InsFranja> franjas;
-    private InsFranja franja;
     private List<InsAula> aulas;
-    private InsAula aula;
     private InsHorario horario;
     private List<InsAula> aulasFilt;
     private List<InsHorario> horarios;
+
+    private Integer codigoAula;
+    private Integer coigoFranja;
 
     private List<InsClase> clases;
     private InsClase clase;
@@ -77,10 +78,8 @@ public class HorarioBean extends BaseBean implements Serializable {
         this.franjas = this.franjaService.obtenerTodos();
         this.clases = this.claseService.obtenerTodos();
         this.aulasTipos = new ArrayList<>();
-        this.franja = new InsFranja();
         this.clase = new InsClase();
-        // this.aulas = this.aulaService.obtenerTodos();
-        this.aula = new InsAula();
+        this.aulas = this.aulaService.obtenerTodos();
         this.horario = new InsHorario();
         this.horario.setCodigo(new InsHorarioPK());
         this.dias = new HashMap<>();
@@ -97,14 +96,14 @@ public class HorarioBean extends BaseBean implements Serializable {
         this.aulasTipos.add("Normales");
         this.isHorario = false;
         this.isHorarioDet = false;
-
+        this.aulaTipo = "";
     }
 
     public void cargarAulas() {
 
-        if (aulaTipo != null && !aulaTipo.equals("")) {
+        if (this.aulaTipo != null && !this.aulaTipo.equals("")) {
             aulasFilt = aulas.stream().filter(x -> x.getTipo().equals(
-                    aulaTipo.equals("Auditorios") ? "AUD" : aulaTipo.equals("Laboratorios") ? "LAB" : "NOR"
+                    this.aulaTipo.equals("Auditorios") ? "AUD" : this.aulaTipo.equals("Laboratorios") ? "LAB" : "NOR"
             )).collect(Collectors.toList());
         } else {
             aulasFilt = new ArrayList<InsAula>();
@@ -115,7 +114,7 @@ public class HorarioBean extends BaseBean implements Serializable {
     public void guardarHorario() {
 
         FacesMessage msg;
-        if (this.franja == null || this.aula == null || this.dia.equals("Seleccionar")) {
+        /*  if (this.franja == null || this.aula == null || this.dia.equals("Seleccionar")) {
             msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Datos incorrectos.");
         } else {
 
@@ -138,7 +137,7 @@ public class HorarioBean extends BaseBean implements Serializable {
             msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Correcto", "Horario guardado");
 
         }
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+        FacesContext.getCurrentInstance().addMessage(null, msg);**/
     }
 
     public void verHorario() {
@@ -201,40 +200,73 @@ public class HorarioBean extends BaseBean implements Serializable {
     }
 
     public void eliminar() {
+        FacesMessage msg;
         try {
             this.horarioService.Eliminar(this.horario);
             this.verHorario();
+            msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Eliminado Correctamente", "");
             FacesUtil.addMessageInfo("Se elimino el registro.");
             this.horario = null;
         } catch (Exception e) {
-            FacesUtil.addMessageError(null, "No se puede eliminar el registro seleccionado. Verifique que no tenga informacion relacionada.");
+            msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error al eliminar", "");
         }
+        FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
     public void guardar() {
+                FacesMessage msg;
+
         try {
 
-            System.out.println(this.horario);
-            this.horarioService.crear(this.horario);
-            FacesUtil.addMessageInfo("Se agreg\u00f3 el item al men\u00fa: ");
+            if (this.codigoAula.equals(null) || this.coigoFranja.equals(null) || this.dia.equals(null)) {
+                throw new Exception("Seleccione el aula");
+            } else {
+                //InsAula tempAul=this.aulaService.buscar(this.codigoAula);
+                ;
 
+                this.horario = new InsHorario();
+                this.horario.setCodigo(new InsHorarioPK(this.coigoFranja, this.codigoAula));
+                this.horario.setInsClase(this.clase);
+                this.horario.setDia(this.dias.entrySet().stream()
+                        .filter(e -> e.getValue().equals(this.dia))
+                        .map(Map.Entry::getKey)
+                        .findFirst()
+                        .orElse("M"));
+                this.horario.setInsAula(this.aulas.stream().
+                        filter(x -> x.getCodigo()
+                        .equals(this.codigoAula))
+                        .findFirst()
+                        .get());
+                this.horario.setInsFranja(
+                        this.franjas.stream().
+                                filter(x -> x.getCodigo()
+                                .equals(this.coigoFranja))
+                                .findFirst()
+                                .get());
+                this.horario.setEstado(EstadoHorarioEnum.ACT);
+                this.horarioService.crear(horario);
+                this.horario = null;
+                            msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Creado Correctamente", "");
+
+            }
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-            FacesUtil.addMessageError(null, "Ocurrí\u00f3 un error al actualizar la informaci\u00f3n");
+            this.horario = null;
+             msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error al crear", "");
+
         }
         super.reset();
         this.horario = null;
         this.verHorario();
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+
     }
 
     public void onRowSelect(SelectEvent event) {
-        FacesMessage msg = new FacesMessage("Clase seleccionada", ((InsClase) event.getObject()).getInsCurso().getDescripcion());
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+       
     }
 
     public void onRowUnselect(UnselectEvent event) {
-        FacesMessage msg = new FacesMessage("Car Unselected", ((InsClase) event.getObject()).getInsCurso().getDescripcion());
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+        
     }
 
     public List<InsFranja> getFranjas() {
@@ -245,28 +277,12 @@ public class HorarioBean extends BaseBean implements Serializable {
         this.franjas = franjas;
     }
 
-    public InsFranja getFranja() {
-        return franja;
-    }
-
-    public void setFranja(InsFranja franja) {
-        this.franja = franja;
-    }
-
     public List<InsAula> getAulas() {
         return aulas;
     }
 
     public void setAulas(List<InsAula> aulas) {
         this.aulas = aulas;
-    }
-
-    public InsAula getAula() {
-        return aula;
-    }
-
-    public void setAula(InsAula aula) {
-        this.aula = aula;
     }
 
     public InsHorario getHorario() {
@@ -387,5 +403,21 @@ public class HorarioBean extends BaseBean implements Serializable {
 
     public void setIsHorarioDet(Boolean isHorarioDet) {
         this.isHorarioDet = isHorarioDet;
+    }
+    
+    public Integer getCodigoAula() {
+        return codigoAula;
+    }
+
+    public void setCodigoAula(Integer codigoAula) {
+        this.codigoAula = codigoAula;
+    }
+
+    public Integer getCoigoFranja() {
+        return coigoFranja;
+    }
+
+    public void setCoigoFranja(Integer coigoFranja) {
+        this.coigoFranja = coigoFranja;
     }
 }
