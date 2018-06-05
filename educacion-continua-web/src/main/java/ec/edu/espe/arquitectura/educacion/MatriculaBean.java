@@ -143,7 +143,7 @@ public class MatriculaBean implements Serializable {
         return est;
     }
 
-    public void canelar() {
+    public void cancelar() {
         this.clasesAgregardas = new ArrayList<>();
         this.claseAdd = new InsClase();
 
@@ -151,6 +151,7 @@ public class MatriculaBean implements Serializable {
 
     public void quitarClase() {
         this.clasesAgregardas.remove(this.clase);
+        System.out.println(clasesAgregardas.size());
     }
 
     public void quitarMatricula() {

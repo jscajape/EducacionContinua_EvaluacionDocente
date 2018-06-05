@@ -143,6 +143,7 @@ public class HorarioBean extends BaseBean implements Serializable {
     public void verHorario() {
         this.isHorario = true;
         this.isHorarioDet = false;
+        System.out.println(this.isHorario);
         if (this.clase != null) {
             this.horarios = this.horarioService.buscarPorClase(this.clase);
         }

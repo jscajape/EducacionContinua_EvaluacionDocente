@@ -8,12 +8,11 @@
       xmlns:ui="http://java.sun.com/jsf/facelets">
     <ui:composition template="/templates/plantillaAdmin.xhtml">
         <ui:define name="contenido">
-            <h:form>
                 <p:panel id="mainPnl" header="AREAS" style="width: 50%; margin: auto;">
                     <p:dataTable var="clase" value="#{horarioBean.clases}"
                                  selectionMode="single" selection="#{horarioBean.clase}" rowKey="#{clase.codigo.codClase}">
-                        <p:ajax event="rowSelect"  listener="#{horarioBean.verHorario()}"  />
-                        <p:ajax event="rowUnselect" listener="#{horarioBean.onRowUnselect} "  />
+                        <p:ajax event="rowSelect"  listener="#{horarioBean.verHorario()}" update="@form"  />
+                        <p:ajax event="rowUnselect"  />
 
                         <p:column headerText="Nombre">
                             <h:outputText value="#{clase.insCurso.descripcion}" />
@@ -27,13 +26,11 @@
                             <h:outputText value="#{horarioBean.formatoFecha(clase.fecFin)}"/>
                         </p:column>
                     </p:dataTable>
-                    <p:commandButton  icon="ui-icon-search" value="Ver horario" actionListener="#{horarioBean.verHorario()}" update="@form"/>
-
                     <p:panel  id="horarioClase" header="Horarios de clase" rendered="#{horarioBean.isHorario}">
                         <p:dataTable id="asd" var="horario" value="#{horarioBean.horarios}" selectionMode="single" selection="#{horarioBean.horario}" rowKey="#{horario.codigo}">
 
                             <p:ajax event="rowSelect"  listener="#{horarioBean.verHorarioDet()}"  />
-                            <p:ajax event="rowUnselect" listener="#{horarioBean.onRowUnselect}"  />
+                            <p:ajax event="rowUnselect" />
 
                             <p:column headerText="Aula">
                                 <h:outputText value="#{horario.insAula.descripcion}" />
@@ -45,8 +42,8 @@
                                 <h:outputText value="#{horarioBean.horarioDia(horario)}"/>
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton value="Agregar" actionListener="#{horarioBean.verHorarioDet()}" update="@form"/>
-                        <p:commandButton value="Eliminar" actionListener="#{horarioBean.eliminar()}" update="@form" />
+                        <p:commandButton icon="fa fa-plus-square-o" value="Agregar" actionListener="#{horarioBean.verHorarioDet()}" update="@form"/>
+                        <p:commandButton icon="fa fa-fw fa-remove" value="Eliminar" actionListener="#{horarioBean.eliminar()}" update="@form" />
                     </p:panel>
 
                     <p:panel  id="horarioClaseDet" header="Detalle" rendered="#{horarioBean.isHorarioDet}">
@@ -76,13 +73,10 @@
 
 
                         </h:panelGrid>
-                        <p:commandButton value="Aceptar" actionListener="#{horarioBean.guardar()}" update="@form" />
-                        <p:commandButton value="Cancelar" actionListener="#{horarioBean.verHorario()}" update="@form" immediate="true"/>
+                        <p:commandButton icon="fa fa-check-square-o" value="Aceptar" actionListener="#{horarioBean.guardar()}" update="@form" />
+                        <p:commandButton icon="fa fa-reply" value="Cancelar" actionListener="#{horarioBean.verHorario()}" update="@form" immediate="true"/>
                     </p:panel>
                 </p:panel>
-
-            </h:form>
-
         </ui:define>
     </ui:composition>
 </html>
