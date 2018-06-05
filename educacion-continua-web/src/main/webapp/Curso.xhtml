@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//ES" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <ui:composition template="/templates/plantillaAdmin.xhtml">
+        <ui:define name="contenido">
+            <p:panel id="mainPnl" header="CURSOS"  style="width: 90%; margin: auto;">
+
+
+                <p:growl id="msgs" showDetail="true" />
+
+                <p:dataTable var="cursos" value="#{cursoBean.cursos}" rows="10"
+                             selectionMode="single" selection="#{cursoBean.cursosel}" rowKey="#{cursos.codigo}"
+                             paginator="true"
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+                    <p:ajax event="rowSelect" update="@form" />
+                    <p:ajax event="rowUnselect" update="@form" />
+                    <p:column headerText="Nombre del curso">
+                        <h:outputText value="#{cursos.descripcion}" />
+                    </p:column>
+                    <p:column headerText="Costo">
+                        <h:outputText value="#{cursos.costo}" />
+                    </p:column>
+                    <p:column headerText="Horas de duracion">
+                        <h:outputText value="#{cursos.horasDuracion}"/>
+                    </p:column>
+                    <p:column style="width:32px;text-align: center">
+                        <p:commandButton oncomplete="PF('carDialog').show()" icon="ui-icon-search" title="View">
+                            <f:setPropertyActionListener value="#{car}" target="#{dtSelectionView.selectedCar}" />
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+                <p:commandButton value="Agregar" actionListener="#{cursoBean.agregar()}" update="@form"/>
+                <p:commandButton id="modBtn" value="Modificar" actionListener="#{cursoBean.modificar()}" update="@form" disabled="#{cursoBean.cursosel eq null}"/>
+                <p:panel header="Registrar Curso" rendered="#{cursoBean.habilitaForm}">
+                    <p:panelGrid columns="2">
+                        <p:outputLabel for="cmbArea" value="Area: " />
+                        <p:selectOneMenu id="cmbArea" value="#{cursoBean.codarea}"  rendered="true" style="width:200px" >
+                            <p:ajax update="@form"/>
+                            <f:selectItems var="area" value="#{cursoBean.areas}" itemLabel="#{area.descripcion}" itemValue="#{area.codigo}"/>
+                        </p:selectOneMenu>     
+                        <p:outputLabel for="descripcion" value="Nombre del curso: " />
+                        <p:inputText id="descripcion" value="#{cursoBean.curso.descripcion}"  required="true" requiredMessage="Debe ingresar la descripcion"/>
+                        <p:outputLabel for="descripcion1" value="Costo: " />
+                        <p:inputText id="descripcion1" value="#{cursoBean.curso.costo}"  required="true" requiredMessage="Debe ingresar la descripcion"/>
+                        <p:outputLabel for="descripcion2" value="Horas de duracion: " />
+                        <p:inputText id="descripcion2" value="#{cursoBean.curso.horasDuracion}"  required="true" requiredMessage="Debe ingresar la descripcion"/>
+                        <p:outputLabel for="tipo" value="tipo" />
+                        <h:selectOneMenu value="#{cursoBean.curso.estado}" style="background-color: black" >
+                            <f:selectItems id="tipo" value="#{cursoBean.tiposCursos}" var="tiposCurso" itemValue="#{tiposCurso}" itemLabel="#{tiposCurso.texto}"  />
+                        </h:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton value="Aceptar" actionListener="#{cursoBean.guardar()}" update="@form" />
+                    <p:commandButton value="Cancelar" actionListener="#{cursoBean.cancelar()}" update="@form" immediate="true"/>
+                </p:panel>
+            </p:panel>
+        </ui:define>
+    </ui:composition>
+</html>

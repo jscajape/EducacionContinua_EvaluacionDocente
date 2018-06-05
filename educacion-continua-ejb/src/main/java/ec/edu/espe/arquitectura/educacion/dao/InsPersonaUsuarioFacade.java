@@ -36,5 +36,10 @@ public class InsPersonaUsuarioFacade extends AbstractFacade<InsPersonaUsuario> {
     qry.setParameter(1, codUsuario);
     return qry.getResultList();
     }
+      public List<InsPersonaUsuario> PorRol(String codRol) {
+    Query qry = this.em.createQuery("SELECT obj FROM InsPersonaUsuario obj WHERE obj.codigo.codRol =?1");
+    qry.setParameter(1, codRol);
+    return qry.getResultList();
+    }
     
 }

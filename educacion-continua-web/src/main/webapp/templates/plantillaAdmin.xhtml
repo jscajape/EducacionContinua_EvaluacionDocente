@@ -24,22 +24,16 @@
                     <p:growl id="messages"/>
                     <p:menubar>
                         <p:submenu  label="Area" >    
-                            <p:menuitem >
-                                <p:dataTable var="area" value="#{areaBean.insAreas}" 
-                                             selectionMode="single" selection="#{areaBean.insAreaSel}" rowKey="#{area.codigo}">
-                                    <p:ajax event="rowDblselect"/>
-                                    <p:ajax event="rowUnselect" update="@form" />
-                                    <p:column>
-                                        <h:outputText value="#{area.descripcion}" />
-                                    </p:column>     
-                                </p:dataTable>
-                            </p:menuitem>                  
+                                        
                             <p:menuitem value="Configurar" action="Area"/> 
                         </p:submenu>
                         <p:submenu label="Cursos">   
                             <p:menuitem value="Clase" action="Clase" />
                             <p:menuitem value="Horario" action="Horario" />
                              <p:menuitem value="Matricula" action="Matricula" />
+                        </p:submenu>
+                         <p:submenu label="Clases">   
+                            <p:menuitem value="Clases" action="Clase" />
                         </p:submenu>
                         <p:menuitem value="Personas" action="persona"/>
                         <p:submenu label="Usuarios" >

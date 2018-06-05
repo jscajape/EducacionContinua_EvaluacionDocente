@@ -1,16 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <title>TODO supply a title</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    </head>
-    <body>
-        <div>TODO write content</div>
-    </body>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//ES" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <ui:composition template="/templates/plantillaAdmin.xhtml">
+        <ui:define name="contenido">
+
+            <p:panel id="mainPnl" header="Agregar Clase" style="width: 90%; margin: auto;">
+
+                <h:panelGrid columns="4">
+                    <p:outputLabel for="cmbArea" value="Areas:        " />
+                    <p:selectOneMenu id="cmbArea" onchange="#{claseBean.filtro()}" value="#{claseBean.codarea}"  rendered="true" style="width:200px" >
+                        <p:ajax update="@form"/>
+                        <f:selectItems var="area" value="#{claseBean.areas}" itemLabel="#{area.descripcion}" itemValue="#{area.codigo}"/>
+                    </p:selectOneMenu>      
+
+                    <p:outputLabel for="cmbArea1" value="Cursos: " />
+                    <p:selectOneMenu id="cmbArea1" value="#{claseBean.codcurso}" style="width:350px">
+                        <f:selectItems var="curso" value="#{claseBean.cursos}" itemLabel="#{curso.descripcion}" itemValue="#{curso.codigo}"/>
+                    </p:selectOneMenu>    
+
+                    <p:outputLabel for="button" value="Incio del curso:" />
+                    <p:calendar id="button" value="#{claseBean.clase.fecIni}" showOn="button"/>
+                    <p:outputLabel for="button1" value="Fin del curso:" />
+                    <p:calendar id="button1" value="#{claseBean.clase.fecFin}" showOn="button"/>
+
+                    <p:outputLabel for="estado" value="Modalidad:" />
+                    <p:selectOneMenu id="estado" value="#{claseBean.clase.modalidad}" style="width:165px">
+                        <f:selectItem itemLabel="PRESENCIAL" itemValue="PRE" />
+                        <f:selectItem itemLabel="SEMIPRESENCIAL" itemValue="SEM" />
+                    </p:selectOneMenu>
+                    <p:outputLabel for="menu" value="Estado:" />
+                    <p:selectOneMenu id="menu" value="#{claseBean.clase.estado}" style="width:165px" >
+                        <f:selectItems id="tipo" value="#{claseBean.tiposClases}" var="tiposClase" itemValue="#{tiposClase}" itemLabel="#{tiposClase.texto}"  />
+                    </p:selectOneMenu>
+                    <p:outputLabel for="cmbProfe" value="Profesor: " />
+                    <p:selectOneMenu id="cmbProfe" value="#{claseBean.codigoProf}" rendered="true" style="width:250px" >
+
+                        <f:selectItems var="prof" value="#{claseBean.Profesores()}" itemLabel="#{prof.apellido} #{prof.nombre}" itemValue="#{prof.codigo}"/>
+                    </p:selectOneMenu> 
+                </h:panelGrid>
+
+
+                <p:commandButton value="Agregar" actionListener="#{claseBean.guardar()}" update="@form"/>
+                <p:commandButton value="Cancelar" actionListener="#{claseBean.cancelar()}" update="@form"/>
+            </p:panel>
+
+        </ui:define>
+    </ui:composition>
 </html>

@@ -7,6 +7,7 @@ package ec.edu.espe.arquitectura.educacion.dao;
 
 import ec.edu.espe.arquitectura.educacion.model.InsClase;
 import ec.edu.espe.arquitectura.educacion.model.InsMatricula;
+import ec.edu.espe.arquitectura.educacion.model.InsPersona;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -32,13 +33,27 @@ public class InsClaseFacade extends AbstractFacade<InsClase> {
     public InsClaseFacade() {
         super(InsClase.class);
     }
-
+       public List<InsPersona> buscarPorProfesor(String codProf) {
+        Query qry = this.em.createQuery("SELECT obj FROM InsPersona obj WHERE obj.tipo=?1");
+        qry.setParameter(1, codProf);
+        return qry.getResultList();
+    }
+   
     public List<InsClase> buscarPorDocente(String codDocente) {
         Query qry = this.em.createQuery("SELECT obj FROM InsClase obj WHERE obj.insPersona.codigo =?1");
         qry.setParameter(1, codDocente);
         return qry.getResultList();
     }
-
+    public List<InsClase> buscarMaximo() {
+        Query qry = this.em.createQuery("SELECT obj FROM InsClase obj where obj.codigo  =  (SELECT max(obj.codigo) FROM InsClase)");
+        
+        return qry.getResultList();
+    }
+    /* public String buscarMax() {
+        Query qry = this.em.createQuery("SELECT obj FROM InsClase obj where obj.codigo  =  (SELECT max(obj.codigo) FROM InsClase)");
+        
+        return (String)qry;
+    }*/
     public List<InsClase> buscarPorEstudiante(String codEstudiante) {
         List<InsMatricula> listaMatricula = new ArrayList<InsMatricula>();
         List<InsClase> listaClases = new ArrayList<InsClase>();

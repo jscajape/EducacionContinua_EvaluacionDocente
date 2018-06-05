@@ -7,6 +7,7 @@ package ec.edu.espe.arquitectura.educacion.service;
 
 import ec.edu.espe.arquitectura.educacion.dao.InsClaseFacade;
 import ec.edu.espe.arquitectura.educacion.model.InsClase;
+import ec.edu.espe.arquitectura.educacion.model.InsPersona;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
@@ -35,4 +36,12 @@ public class InsClaseServ {
     public void eliminar(InsClase clase){
         this.clasefacade.remove(clase);
     }
+     public List<InsPersona> obtenerProfesores(String codProf) {
+        return this.clasefacade.buscarPorProfesor(codProf);
+    }
+     public List<InsClase> buscarMaximo()
+     {
+         return this.clasefacade.buscarMaximo();
+     }
+     
 }
