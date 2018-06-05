@@ -29,6 +29,15 @@ public class AreaBean extends BaseBean implements Serializable{
     private List<InsArea> insareas;
     private InsArea insarea;
     private InsArea insareasel;
+    private String codarea;
+
+    public String getCodarea() {
+        return codarea;
+    }
+
+    public void setCodarea(String codarea) {
+        this.codarea = codarea;
+    }
     
      @Inject
     private InsAreaServ areaServ;

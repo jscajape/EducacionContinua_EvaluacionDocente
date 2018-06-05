@@ -6,8 +6,14 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://java.sun.com/jsf/facelets">
-    <ui:composition template="/templates/plantilla.xhtml">
+    <ui:composition template="/templates/plantillaAdmin.xhtml">
         <ui:define name="contenido">
+            <p:panel id="buscPnl" header="Busqueda">
+                <p:outputLabel for="codigoBusqueda" value="Buscar:" />
+                <p:inputText id="codigoBusqueda"  style="width: 195px" value="#{segUsuarioBean.codigoBusqueda}"/>
+                <p:message for="codigoBusqueda" />
+                <p:commandButton id="buscarCmd" value="Buscar" actionListener="#{segUsuarioBean.Buscar()}" update="@form" />
+            </p:panel>
             <p:panel id="mainPnl" header="Agregar Persona" style="width: 90%; margin: auto;">
                 <p:dataTable var="usuario" value="#{segUsuarioBean.segUsuarios}" selectionMode="single" rows="10" style="width:1400px"
                              selection="#{segUsuarioBean.segUsuarioSel}" rowKey="#{usuario.codigo}" paginator="true"
@@ -44,8 +50,7 @@
                 <p:panel header="Registrar Persona" rendered="#{segUsuarioBean.habilitaForm}">
                     <p:panelGrid columns="3">
                         <p:outputLabel for="codigo" value="Identificaci&#243;n" />
-                        <p:inputText id="codigo" value="#{segUsuarioBean.segUsuario.codigo}" disabled="#{segUsuarioBean.enModificar}" required="true" requiredMessage="Debe ingresar el codigo"/>
-                        <p:message for="codigo" />
+
                         <p:outputLabel for="nombre" value="Nombre" />
                         <p:inputText id="nombre" value="#{segUsuarioBean.segUsuario.nombre}"  required="true" requiredMessage="Debe ingresara la descripcion"/>
                         <p:message for="nombre" />
@@ -59,6 +64,10 @@
                             <f:selectItem itemLabel="SUSPENDIDO" itemValue="SUS" />
                             <f:selectItem itemLabel="BLOQUEADO" itemValue="BLO" />
                             <f:selectItem itemLabel="PENDIENTE" itemValue="PEN" />
+                        </p:selectOneMenu>
+                        <p:outputLabel for="perfilCmb" value="Crucero:" />
+                        <p:selectOneMenu id="perfilCmb" value="#{segUsuarioBean.perfil}" rendered="true">
+                            <f:selectItems var="perfil" value="#{segUsuarioBean.segPerfiles}" itemLabel="#{perfil.nombre}" itemValue="#{perfil.codigo}" />
                         </p:selectOneMenu>
                         <p:message for="estado" />
                     </p:panelGrid>

@@ -5,6 +5,7 @@
  */
 package ec.edu.espe.arquitectura.educacion.dao;
 
+import ec.edu.espe.arquitectura.educacion.model.InsClase;
 import ec.edu.espe.arquitectura.educacion.model.InsMatricula;
 import java.util.List;
 import javax.ejb.Stateless;

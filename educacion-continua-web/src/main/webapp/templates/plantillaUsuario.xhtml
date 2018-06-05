@@ -23,34 +23,15 @@
                 <h:form>
                     <p:growl id="messages"/>
                     <p:menubar>
-                        <p:submenu  label="Area" >    
-                            <p:menuitem >
-                                <p:dataTable var="area" value="#{areaBean.insAreas}" 
-                                             selectionMode="single" selection="#{areaBean.insAreaSel}" rowKey="#{area.codigo}">
-                                    <p:ajax event="rowDblselect"/>
-                                    <p:ajax event="rowUnselect" update="@form" />
-                                    <p:column>
-                                        <h:outputText value="#{area.descripcion}" />
-                                    </p:column>     
-                                </p:dataTable>
-                            </p:menuitem>                  
-                            <p:menuitem value="Configurar" action="Area"/> 
-                        </p:submenu>
-                        <p:submenu label="Cursos">   
-                            <p:menuitem value="Cursos" action="Curso" />
-                        </p:submenu>
                         <p:submenu label="Alumno">                           
                         </p:submenu>
                         <p:submenu label="Facturacion">                           
                         </p:submenu>  
-                        <p:menuitem value="Personas" action="persona"/>
-                        <p:submenu label="Usuarios" >
-                            <p:menuitem value="Crear usuarios" action="usuario" />
-                        </p:submenu>
                         <p:submenu label="Evaluacion Docente" >
                             <p:menuitem value="Realizar Evalacion" action="tipoEvaluacionDocente" />
                         </p:submenu>
-                      
+                        <p:menuitem value="#{usuarioSesionBean.nombre}" url="#" style="margin-right:10px"/>
+                        <p:menuitem value="Salir" icon="ui-icon-extlink" action="#{indexBean.logout()}" />
                     </p:menubar>
                     <p:spacer height="10px"/>
                     <ui:insert name="contenido">

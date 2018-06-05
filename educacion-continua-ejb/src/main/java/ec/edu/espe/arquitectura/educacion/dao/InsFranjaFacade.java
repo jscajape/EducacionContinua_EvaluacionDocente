@@ -28,5 +28,5 @@ public class InsFranjaFacade extends AbstractFacade<InsFranja> {
     public InsFranjaFacade() {
         super(InsFranja.class);
     }
-    
+      
 }

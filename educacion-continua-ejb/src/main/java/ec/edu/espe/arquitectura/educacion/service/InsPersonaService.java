@@ -28,7 +28,10 @@ public class InsPersonaService {
     public List<InsPersona> obtenerTodos() {
         return this.insPersonaFacade.findAll();
     }
-
+  
+       public InsPersona obtenerPorCodigo(String cod) {
+        return this.insPersonaFacade.buscarPorCodigo(cod).get(0);
+    }
     public void crear(InsPersona insPersona) {
         if(this.insPersonaFacade.find(insPersona.getCodigo()) == null){
             this.insPersonaFacade.create(insPersona);
@@ -46,4 +49,5 @@ public class InsPersonaService {
         InsPersona insPersona = this.insPersonaFacade.find(codigo);
         this.insPersonaFacade.remove(insPersona);
     } 
+    
 }
