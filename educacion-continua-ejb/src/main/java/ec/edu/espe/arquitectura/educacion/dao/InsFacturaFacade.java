@@ -36,5 +36,10 @@ public class InsFacturaFacade extends AbstractFacade<InsFactura> {
         qry.setParameter(1, codigo);
         return qry.getResultList();
     }
+     public List<InsFactura> buscarMaximo() {
+        Query qry = this.em.createQuery("SELECT obj FROM InsFactura obj where obj.codigo  =  (SELECT max(obj.codigo) FROM InsFactura)");
+        
+        return qry.getResultList();
+    }
     
 }

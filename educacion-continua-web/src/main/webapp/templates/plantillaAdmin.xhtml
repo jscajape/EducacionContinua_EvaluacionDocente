@@ -24,21 +24,27 @@
                     <p:growl id="messages"/>
                     <p:menubar>
                         <p:submenu  label="Area" >    
-                                        
+
                             <p:menuitem value="Configurar" action="Area"/> 
                         </p:submenu>
                         <p:submenu label="Cursos">   
                             <p:menuitem value="Clase" action="Clase" />
                             <p:menuitem value="Horario" action="Horario" />
-                             <p:menuitem value="Matricula" action="Matricula" />
+                            <p:menuitem value="Matricula" action="Matricula" />
                         </p:submenu>
-                         <p:submenu label="Clases">   
+
+                        <p:submenu label="Clases">   
                             <p:menuitem value="Clases" action="Clase" />
                         </p:submenu>
-                         <p:submenu label="Clases">   
-                            <p:menuitem value="Clases" action="Clase" />
+
+                        <p:submenu label="Facturacion">   
+                            <p:menuitem value="Generar Factura" action="Factura" />
+                            <p:menuitem value="Clientes" action="Cliente"/>
+                            <p:menuitem value="Lista Facturas" action="listafacturas"/>
+
+
                         </p:submenu>
-                        <p:menuitem value="Personas" action="persona"/>
+                        <p:menuitem value=" Personas " action="persona"/>
                         <p:submenu label="Usuarios" >
                             <p:menuitem value="Crear usuarios" action="UsuarioAdmin" />
                         </p:submenu>

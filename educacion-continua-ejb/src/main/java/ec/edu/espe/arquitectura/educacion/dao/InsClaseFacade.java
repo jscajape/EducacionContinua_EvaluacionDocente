@@ -78,7 +78,7 @@ public class InsClaseFacade extends AbstractFacade<InsClase> {
     public List<InsClase> buscarPorArea(Integer codArea) {
         List<InsClase> listaClases = new ArrayList<InsClase>();
 
-        Query qry = this.em.createQuery("SELECT obj FROM InsClase obj WHERE obj.insCurso.codigo =?1");
+        Query qry = this.em.createQuery("SELECT obj FROM InsClase obj WHERE obj.insCurso.insArea.codigo =?1");
         qry.setParameter(1, codArea);
         listaClases = qry.getResultList();
         return listaClases;

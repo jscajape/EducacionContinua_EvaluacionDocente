@@ -44,7 +44,7 @@
                                   selectionMode="single" selection="#{matriculaBean.claseAdd}" rowKey="#{ claseadd.codigo.codClase }">
                         <p:ajax event="rowSelect"  listener="#{matriculaBean.quitarClase()}" update="@form"  />
                         <p:ajax event="rowUnselect"  />
-                        
+
                         <p:column headerText="Nombre">
                             <h:outputText value="#{claseadd.insCurso.descripcion}" />
                         </p:column>
@@ -84,7 +84,28 @@
                     </p:column>
                 </p:dataTable>
                 <p:commandButton value="Quitar" actionListener="#{matriculaBean.quitarMatricula()}" update="@form" />
-                <p:commandButton value="Detalles" actionListener="#{matriculaBean.cancelar()}" update="@form" immediate="true"/>
+                <p:commandButton value="Detalles" actionListener="#{matriculaBean.verPagos()}" update="@form" immediate="true"/>
+            </p:panel>
+
+            <p:panel  header="Estado de Pagos" style="width: 70%; margin: auto;" rendered="#{matriculaBean.pagos}" >
+
+                <p:dataTable var="factura" value="#{facturaBean.facturas}" 
+                             selectionMode="single" selection="#{facturaBean.facturaSel}" rowKey="#{factura.codigo}">
+                    <p:ajax event="rowSelect" update="@form" />
+                    <p:ajax event="rowUnselect" update="@form" />
+                    <p:column headerText="CÓDIGO FACTURA">
+                        <h:outputText value="#{factura.codigo}" />
+                    </p:column>
+                    <p:column headerText="CLIENTE">
+                        <h:outputText value="#{factura.insCliente.razonSocial}" />
+                    </p:column>
+                    <p:column headerText="TOTAL">
+                        <h:outputText value="#{factura.total}" />
+                    </p:column>
+                    <p:column headerText="ESTADO">
+                        <h:outputText value="#{factura.estado}" />
+                    </p:column>
+                </p:dataTable>
             </p:panel>
 
         </ui:define>

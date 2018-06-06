@@ -7,8 +7,10 @@ package ec.edu.espe.arquitectura.educacion;
 
 import ec.edu.espe.arquitectura.educacion.model.InsArea;
 import ec.edu.espe.arquitectura.educacion.model.InsClase;
+import ec.edu.espe.arquitectura.educacion.model.InsFactura;
 import ec.edu.espe.arquitectura.educacion.model.InsMatricula;
 import ec.edu.espe.arquitectura.educacion.model.InsPersona;
+import ec.edu.espe.arquitectura.educacion.service.FacturaService;
 import ec.edu.espe.arquitectura.educacion.service.InsAreaServ;
 import ec.edu.espe.arquitectura.educacion.service.InsClaseService;
 import ec.edu.espe.arquitectura.educacion.service.InsPersonaService;
@@ -49,6 +51,12 @@ public class MatriculaBean implements Serializable {
     private List<InsArea> areas;
     private Integer codArea;
     private InsMatricula matricula;
+    private Boolean pagos;
+    private List<InsFactura> facturasAlumno;
+    private InsFactura factura;
+    
+
+ 
 
     @Inject
     private UsuarioSesionBean usuario;
@@ -60,6 +68,9 @@ public class MatriculaBean implements Serializable {
     private InsAreaServ areaService;
     @Inject
     private InsPersonaService personaService;
+    @Inject
+    private FacturaService facturaService;
+    
 
     @PostConstruct
     public void init() {
@@ -67,9 +78,11 @@ public class MatriculaBean implements Serializable {
         this.clasesAgregardas = new ArrayList<>();
         this.alumno = this.personaService.obtenerPorCodigo(usuario.getUsuario().getCodigo());
         this.matriculasAlumno = this.matriculaService.obtenerPorAlumno(this.alumno.getCodigo());
+        this.pagos=false;
 
     }
 
+    
     public void cargarClases() {
         this.clases = this.claseService.obtenerClasesArea(this.codArea);
         //System.out.println(this.clases.size());
@@ -135,6 +148,9 @@ public class MatriculaBean implements Serializable {
             case "A":
                 est = "Curso aprobado";
                 break;
+            case "P":
+                est = "Curso Activo";
+                break;
             default:
                 est = "INDEFINIDO";
                 break;
@@ -155,13 +171,13 @@ public class MatriculaBean implements Serializable {
     }
 
     public void quitarMatricula() {
-        FacesMessage msg=null;
+        FacesMessage msg = null;
 
         if (this.claseMat != null) {
             try {
                 if (/*claseMat.getInsClase().getFecIni().before(new Date()) &&/*/"M".equals(claseMat.getEstado())) {
                     this.matriculaService.eliminar(claseMat);
-                    this.matriculasAlumno=this.matriculaService.obtenerPorAlumno(this.alumno.getCodigo());
+                    this.matriculasAlumno = this.matriculaService.obtenerPorAlumno(this.alumno.getCodigo());
                     msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Registro eliminado", "");
 
                 }
@@ -299,6 +315,36 @@ public class MatriculaBean implements Serializable {
 
     public void setClaseMat(InsMatricula claseMat) {
         this.claseMat = claseMat;
+    }
+   public Boolean getPagos() {
+        return pagos;
+    }
+
+    public void setPagos(Boolean pagos) {
+        this.pagos = pagos;
+    }   
+    public List<InsFactura> getFacturasAlumno() {
+        return facturasAlumno;
+    }
+
+    public void setFacturasAlumno(List<InsFactura> facturasAlumno) {
+        this.facturasAlumno = facturasAlumno;
+    }
+
+    public InsFactura getFactura() {
+        return factura;
+    }
+
+    public void setFactura(InsFactura factura) {
+        this.factura = factura;
+    }
+
+    public FacturaService getFacturaService() {
+        return facturaService;
+    }
+
+    public void setFacturaService(FacturaService facturaService) {
+        this.facturaService = facturaService;
     }
 
 }
