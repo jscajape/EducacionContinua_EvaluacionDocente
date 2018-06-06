@@ -13,11 +13,15 @@ import ec.edu.espe.arquitectura.educacion.model.InsFactura;
 import ec.edu.espe.arquitectura.educacion.model.InsMatricula;
 import ec.edu.espe.arquitectura.educacion.service.DetalleFacturaService;
 import ec.edu.espe.arquitectura.educacion.service.FacturaService;
-import ec.edu.espe.arquitectura.educacion.service.InsMatriculaService;
+import ec.edu.espe.arquitectura.educacion.service.MatriculaService;
 import ec.edu.espe.arquitectura.educacion.service.ClienteService;
 import ec.edu.espe.arquitectura.educacion.web.util.FacesUtil;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.Format;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -41,25 +45,22 @@ public class ClienteBean extends BaseBean implements Serializable {
     private String codigoAlumno;
 
     private float subtotal;
-    
-    private float iva;
-    
-    private float total;
-    
-    private Date fecha;
-    
-    private InsFactura insfactura;
-    
-    private InsDetalleFactura detallefactura;
-    
-    private List<InsFactura> facturas;
-    
-    
-    
-    private String auxiliarMostrar;
-    
-   // private List<String> secuencial;
 
+    private float iva;
+
+    private float total;
+
+    private String fecha;
+
+    private InsFactura insfactura;
+
+    private InsDetalleFactura detallefactura;
+
+    private List<InsFactura> facturas;
+
+    private String auxiliarMostrar;
+
+    // private List<String> secuencial;
     private List<InsMatricula> matriculas;
     private boolean mostrarDatos;
 
@@ -68,7 +69,7 @@ public class ClienteBean extends BaseBean implements Serializable {
     @Inject
     private ClienteService clienteService;
     @Inject
-    private InsMatriculaService matriculaService;
+    private MatriculaService matriculaService;
     @Inject
     private FacturaService facturaService;
     @Inject
@@ -81,12 +82,13 @@ public class ClienteBean extends BaseBean implements Serializable {
         this.mostrarDatos = false;
         this.codigoAlumno = "";
         this.subtotal = 0;
-        this.matriculas = new ArrayList<>(); 
-        this.iva=0;
-        this.total=0;
-        this.fecha=new Date();
-        this.insfactura=new InsFactura();
-        this.detallefactura=new InsDetalleFactura();
+        this.matriculas = new ArrayList<>();
+        this.iva = 0;
+        this.total = 0;
+        this.insfactura = new InsFactura();
+        this.detallefactura = new InsDetalleFactura();
+        this.fecha = this.fechaActual();
+
     }
 
     public List<InsCliente> getclientes() {
@@ -123,8 +125,29 @@ public class ClienteBean extends BaseBean implements Serializable {
         super.reset();
         this.cliente = new InsCliente();
     }
-    
-     public void guardar() {
+
+    public String sigCod() {
+        ArrayList<Integer> codigos = new ArrayList<>();
+
+        this.facturas = this.facturaService.obtenerTodos();
+        this.facturas.forEach(x -> {
+            String cod = x.getCodigo().substring(3);
+            codigos.add(Integer.parseInt(cod));
+        });
+
+        codigos.sort((x0, x1) -> x0.compareTo(x1));
+        System.out.println();
+        return "F00" + (codigos.get(codigos.size() - 1) + 1);
+    }
+
+    public String fechaActual() {
+        Format formatter = new SimpleDateFormat("dd/MM/yyyy");
+        String s = formatter.format(new Date());
+        return s;
+
+    }
+
+    public void guardar() {
         try {
             if (this.enAgregar) {
                 this.clienteService.crear(this.cliente);
@@ -140,12 +163,16 @@ public class ClienteBean extends BaseBean implements Serializable {
         this.cliente = new InsCliente();
         this.clientes = this.clienteService.obtenerTodos();
     }
-     
-      public void guardarFactura() {
-        String codigoaux=this.facturas.get(this.facturas.size()).getCodigo();
-        String num=codigoaux.substring(6,codigoaux.length());
+
+    public void guardarFactura() {
+//        String codigoaux=this.facturas.get(this.facturas.size()).getCodigo();
+        //  String num=codigoaux.substring(6,codigoaux.length());
+        NumberFormat formatter = new DecimalFormat("####,####");
+
         try {
-           this.insfactura.setCodigo("FAC00017");
+            this.insfactura = new InsFactura();
+
+            this.insfactura.setCodigo(sigCod());
             this.insfactura.setDescuento(BigDecimal.ZERO);
             this.insfactura.setEstado(EstadoFacturaEnum.PAG);
             this.insfactura.setInsCliente(cliente);
@@ -155,16 +182,28 @@ public class ClienteBean extends BaseBean implements Serializable {
             this.insfactura.setSubtotal(BigDecimal.valueOf(this.subtotal));
             this.insfactura.setTotal(BigDecimal.valueOf(this.total));
             this.facturaService.crear(this.insfactura);
-            this.detallefactura.setCantidad(1);
-            this.detallefactura.setDescuento(BigDecimal.ZERO);
-            this.detallefactura.setInsFactura(insfactura);
-            this.detallefactura.setInsMatricula(insMatricula);
-            this.detallefactura.setValorTotal(BigDecimal.valueOf(this.total));
-            this.detallefactura.setValorUnitario((this.insMatricula.getInsClase().getInsCurso().getCosto()));
-            this.detalleService.crear(detallefactura);
+            this.matriculas.forEach(x -> {
+                this.detallefactura = new InsDetalleFactura();
+                this.detallefactura.setCantidad(1);
+                this.detallefactura.setDescuento(BigDecimal.ZERO);
+                this.detallefactura.setInsFactura(insfactura);
+                this.detallefactura.setInsMatricula(x);
+                Double a = Double.parseDouble(formatter.format(x.getInsClase().getInsCurso().getCosto().floatValue()));
+                this.detallefactura.setValorTotal(BigDecimal.valueOf(a));
+                this.detallefactura.setValorUnitario((x.getInsClase().getInsCurso().getCosto()));
+                this.detalleService.crear(detallefactura);
+                x.setEstado("P");
+                this.matriculaService.modificar(x);
+
+            });
+            this.matriculas = new ArrayList<>();
+            super.reset();
+
             FacesUtil.addMessageInfo("Se agregó la factura: " + this.insfactura.getCodigo());
         } catch (Exception ex) {
-            FacesUtil.addMessageError(null, "Ocurrí\u00f3 un error al actualizar la información\u00f3n");
+            FacesUtil.addMessageError(null, "O currí\u00f3 un error al actualizar la información\u00f3n");
+            System.out.println(ex);
+
         }
         super.reset();
         this.insfactura = new InsFactura();
@@ -174,27 +213,31 @@ public class ClienteBean extends BaseBean implements Serializable {
     public void buscarcliente() {
         this.mostrarDatos = true;
         this.cliente = this.clienteService.buscarCliente(documento);
-        this.fecha=new Date();
-    
+
     }
 
     public void buscaralumno() {
-        this.matriculas = this.matriculaService.obtenerPorAlumno(codigoAlumno);
+        this.matriculas = this.matriculaService.obtenerPorAlumno(codigoAlumno, "M");
+
+        NumberFormat formatter = new DecimalFormat("####,####");
         float aux = 0;
         float aux1;
         float aux2;
         for (InsMatricula p : matriculas) {
             aux += p.getInsClase().getInsCurso().getCosto().floatValue();
         }
-        this.subtotal=aux;
-        aux1=(float)(aux*0.12);
-        this.iva=aux1;
-        aux2=aux+aux1;
-        this.total=aux2;
+        this.subtotal = aux;
+        aux1 = (float) (aux * 0.12);
+        this.iva = aux1;
+        aux2 = aux + aux1;
+        this.total = aux2;
+        this.total = Float.parseFloat(formatter.format(this.total));
+        this.subtotal = Float.parseFloat(formatter.format(this.subtotal));
+        this.iva = Float.parseFloat(formatter.format(this.iva));
 
     }
-    
-    public EstadoClienteEnum[] getTiposCliente(){
+
+    public EstadoClienteEnum[] getTiposCliente() {
         return EstadoClienteEnum.values();
     }
 
@@ -282,11 +325,12 @@ public class ClienteBean extends BaseBean implements Serializable {
         this.total = total;
     }
 
-    public Date getFecha() {
+    public String getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(String fecha) 
+    {
         this.fecha = fecha;
     }
 
@@ -319,10 +363,7 @@ public class ClienteBean extends BaseBean implements Serializable {
     }
 
     public void setAuxiliarMostrar(String auxiliarMostrar) {
-        this.auxiliarMostrar = auxiliarMostrar;
+        this.auxiliarMostrar = auxiliarMostrar; 
     }
-    
-    
-    
-            
+
 }

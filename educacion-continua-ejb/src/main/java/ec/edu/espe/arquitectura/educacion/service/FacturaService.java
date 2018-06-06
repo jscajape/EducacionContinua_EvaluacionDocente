@@ -40,4 +40,8 @@ public class FacturaService {
         InsFactura factura = this.facturaFacade.PorCodigo(numfactura).get(0);
         return factura;
     }
+   public List<InsFactura> buscarMaximo()
+   {
+       return this.facturaFacade.buscarMaximo();
+   }
 }

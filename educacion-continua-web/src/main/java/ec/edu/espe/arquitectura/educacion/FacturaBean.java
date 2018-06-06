@@ -18,33 +18,30 @@ import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 
-
 @Named
 @ViewScoped
 public class FacturaBean extends BaseBean implements Serializable {
 
-     private List<InsFactura> facturas;
+    private List<InsFactura> facturas;
 
     private InsFactura factura;
 
     private InsFactura facturaSel;
-    
+
     private String numfactura;
-     
-    
-     @Inject
+
+    @Inject
     private FacturaService facturaService;
-     
 
     @PostConstruct
-    public void init() { 
-    this.facturas=this.facturaService.obtenerTodos();
-    this.factura=new InsFactura();   
+    public void init() {
+        this.facturas = this.facturaService.obtenerTodos();
+        this.factura = new InsFactura();
     }
-            
+
     public FacturaBean() {
     }
-    
+
     public List<InsFactura> getfacturas() {
         return facturas;
     }
@@ -58,26 +55,29 @@ public class FacturaBean extends BaseBean implements Serializable {
 
     @Override
     public void modificar() {
-       super.modificar();
-       this.factura = new InsFactura();
-       this.factura.setCodigo(this.facturaSel.getCodigo());
-       this.factura.setDescuento(BigDecimal.ZERO);
-       this.factura.setFechaEmision(new Date());
-       this.factura.setInsCliente(this.facturaSel.getInsCliente());
-       this.factura.setIva(this.facturaSel.getIva());
-       this.factura.setObservacion("");
-       this.factura.setSubtotal(this.facturaSel.getSubtotal());
-       this.factura.setTotal(this.facturaSel.getTotal());
-       this.factura.setEstado(this.facturaSel.getEstado());
+        super.modificar();
+       /* this.factura = new InsFactura();
+        this.factura.setCodigo(this.facturaSel.getCodigo());
+        this.factura.setDescuento(BigDecimal.ZERO);
+        this.factura.setFechaEmision(new Date());
+        this.factura.setInsCliente(this.facturaSel.getInsCliente());
+        this.factura.setIva(this.facturaSel.getIva());
+        this.factura.setObservacion("");
+        this.factura.setSubtotal(this.facturaSel.getSubtotal());
+        this.factura.setTotal(this.facturaSel.getTotal());
+        this.factura.setEstado(this.facturaSel.getEstado());*/
        
+
     }
-    
-     public void guardar() {
-      
+
+    public void guardar() {
+
         try {
+
+            //this.factura.setFechaEmision(new Date());
+            this.facturaSel.setEstado(EstadoFacturaEnum.ANU);
+            this.facturaService.modificar(this.facturaSel);
             
-            this.factura.setFechaEmision(new Date());
-            this.facturaService.crear(this.factura);
             FacesUtil.addMessageInfo("Se agregó la factura: " + this.factura.getCodigo());
         } catch (Exception ex) {
             FacesUtil.addMessageError(null, "Ocurrí\u00f3 un error al actualizar la información\u00f3n");
@@ -90,15 +90,16 @@ public class FacturaBean extends BaseBean implements Serializable {
     public void buscarfactura() {
         this.factura = this.facturaService.buscarFactura(numfactura);
     }
-    
-     public void cancelar() {
+
+    public void cancelar() {
         super.reset();
         this.factura = new InsFactura();
     }
-     
-     public EstadoFacturaEnum[] getTiposFactura(){
+
+    public EstadoFacturaEnum[] getTiposFactura() {
         return EstadoFacturaEnum.values();
     }
+
     public void guardar1() {
         try {
             if (this.enAgregar) {
@@ -147,7 +148,5 @@ public class FacturaBean extends BaseBean implements Serializable {
     public void setFactura(InsFactura factura) {
         this.factura = factura;
     }
-    
-    
 
 }

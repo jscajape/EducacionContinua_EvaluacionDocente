@@ -38,5 +38,14 @@ public class MatriculaService {
      {
          facade.remove(matricula);
      }
+     
+      public void modificar(InsMatricula matricula)
+     {
+         facade.edit(matricula);
+     }
+      
+      public List<InsMatricula> obtenerPorAlumno(String codigo,String estado) {
+        return this.facade.PorAlumno(codigo,estado);
+    }
 
 }

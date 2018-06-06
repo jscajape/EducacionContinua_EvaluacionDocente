@@ -30,13 +30,12 @@
                             <p:menuitem value="Horario" action="Horario" />
                         </p:submenu>
                         <p:menuitem value="Personas" action="persona"/>
-                        <p:submenu label="Usuarios" >
-                            <p:menuitem value="Crear usuarios" action="UsuarioAdmin" />
+                        <p:menuitem value="Usuarios" action="UsuarioAdmin" />
+                        <p:submenu label="Facturacion">   
+                            <p:menuitem value="Generar Factura" action="Factura" />
+                            <p:menuitem value="Clientes" action="Cliente"/>
+                            <p:menuitem value="Lista Facturas" action="listafacturas"/>
                         </p:submenu>
-                        <p:submenu label="Facturacion">       
-                            <p:menuitem value="Buscar Factura" action="listaFacturas"/>
-                            <p:menuitem value="Facturar" action="factura"/>
-                        </p:submenu>  
                         <p:menuitem value="#{usuarioSesionBean.nombre}" url="#"/>
                         <p:menuitem value="Salir" icon="ui-icon-extlink" action="#{indexBean.logout()}" />
                     </p:menubar>
