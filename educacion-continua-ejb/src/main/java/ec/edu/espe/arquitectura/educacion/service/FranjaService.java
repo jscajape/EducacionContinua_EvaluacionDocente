@@ -25,6 +25,8 @@ public class FranjaService {
         return this.franjaFacade.findAll();
     }
 
-    
+    public InsFranja buscar(String cod){
+        return this.franjaFacade.find(cod);
+    }
             
 }

@@ -31,6 +31,8 @@ public class InsPersonaUsuarioService {
     public List<InsPersonaUsuario> obtenerPorUsuario(String codUsuario) {
         return this.perUsFacade.PorUsuario(codUsuario);
     }
-    
+    public List<InsPersonaUsuario> obtenerPorRol(String codRol) {
+        return this.perUsFacade.PorRol(codRol);
+    }
     
 }

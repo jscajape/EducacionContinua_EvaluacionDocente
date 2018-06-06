@@ -247,6 +247,9 @@ public class evaluacionAdminBean implements Serializable {
 
         EvaRespuestaCuestionarioPK codigoRespuestaCuestionario = new EvaRespuestaCuestionarioPK();
         codigoRespuestaCuestionario.setCodClase(codClase);
+        
+        //codigoRespuestaCuestionario.setCodClase(codClase);
+        
         codigoRespuestaCuestionario.setCodCuestionario(this.evaCuestionario.getCodigo());
         codigoRespuestaCuestionario.setCodEvaluacion(evaEvaluacion.getCodigo());
         codigoRespuestaCuestionario.setCodPersona(persona.getCodigo());
@@ -264,6 +267,7 @@ public class evaluacionAdminBean implements Serializable {
         BigDecimal bd = BigDecimal.valueOf((double) sum);
 
         evaRespCuest.setCalificacionPromedio(bd);
+        
         this.respuestaCuestionarioService.guardar(evaRespCuest);
         this.cuestionarioBand = false; 
     }

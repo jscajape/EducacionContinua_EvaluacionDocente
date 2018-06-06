@@ -8,53 +8,51 @@
       xmlns:ui="http://java.sun.com/jsf/facelets">
     <ui:composition template="/templates/plantillaAdmin.xhtml">
         <ui:define name="contenido">
-            <p:panel id="mainPnl" header="CURSOS"  style="width: 50%; margin: auto;">
-                
-                <p:dataTable var="curso" value="#{cursoBean.cursos}"  
-                             selectionMode="single" selection="#{cursoBean.cursosel}" rowKey="#{curso.codigo}">
+            <p:panel id="mainPnl" header="CURSOS"  style="width: 90%; margin: auto;">
+
+
+                <p:growl id="msgs" showDetail="true" />
+
+                <p:dataTable var="cursos" value="#{cursoBean.cursos}" rows="10"
+                             selectionMode="single" selection="#{cursoBean.cursosel}" rowKey="#{cursos.codigo}"
+                             paginator="true"
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
                     <p:ajax event="rowSelect" update="@form" />
                     <p:ajax event="rowUnselect" update="@form" />
-                    <p:column headerText="Nombre">
-                        <h:outputText value="#{curso.descripcion}" />
+                    <p:column headerText="Nombre del curso">
+                        <h:outputText value="#{cursos.descripcion}" />
                     </p:column>
                     <p:column headerText="Costo">
-                        <h:outputText value="#{curso.costo}" />
+                        <h:outputText value="#{cursos.costo}" />
                     </p:column>
-                    <p:column headerText="Estado">
-                        <h:outputText value="#{curso.estado}"/>
+                    <p:column headerText="Horas de duracion">
+                        <h:outputText value="#{cursos.horasDuracion}"/>
                     </p:column>
-                    <p:column headerText="Duracion">
-                        <h:outputText value="#{curso.horasDuracion}"/>
-                    </p:column>
-                     
                 </p:dataTable>
-                 <p:commandButton value="Agregar" actionListener="#{cursoBean.agregar()}" update="@form"/>
-                 <p:commandButton id="modBtn" value="Modificar" actionListener="#{cursoBean.modificar()}" update="@form" disabled="#{areaBean.insAreaSel eq null}"/>
-                 <p:commandButton value="Cancelar" action="Principal"/>
-                <p:panel header="Registrar Area" rendered="#{cursoBean.habilitaForm}">
+                <p:commandButton value="Agregar" actionListener="#{cursoBean.agregar()}" update="@form"/>
+                <p:commandButton id="modBtn" value="Modificar" actionListener="#{cursoBean.modificar()}" update="@form" disabled="#{cursoBean.cursosel eq null}"/>
+                <p:panel header="Registrar Curso" rendered="#{cursoBean.habilitaForm}">
                     <p:panelGrid columns="2">
-                        
-                      
-                        <p:outputLabel for="descripcion" value="descripcion" />
-                        <p:inputText id="descripcion" value="#{cursoBean.curso.descripcion}"  required="true" requiredMessage="Debe ingresar el nombre"/>
-                        
-                        <p:outputLabel for="costo" value="costo" />
-                        <p:inputText id="costo" value="#{cursoBean.curso.costo}"  required="true" requiredMessage="Debe ingresar el costo"/>
-                        <p:outputLabel for="horas" value="horas" />
-                        <p:inputText id="horas" value="#{cursoBean.curso.horasDuracion}"  required="true" requiredMessage="Debe ingresar las horas"/>
-                        <p:outputLabel for="tipos" value="tipo" />
+                        <p:outputLabel for="cmbArea" value="Area: " />
+                        <p:selectOneMenu id="cmbArea" value="#{cursoBean.codarea}"  rendered="true" style="width:200px" >
+                            <p:ajax update="@form"/>
+                            <f:selectItems var="area" value="#{cursoBean.areas}" itemLabel="#{area.descripcion}" itemValue="#{area.codigo}"/>
+                        </p:selectOneMenu>     
+                        <p:outputLabel for="descripcion" value="Nombre del curso: " />
+                        <p:inputText id="descripcion" value="#{cursoBean.curso.descripcion}"  required="true" requiredMessage="Debe ingresar la descripcion"/>
+                        <p:outputLabel for="descripcion1" value="Costo: " />
+                        <p:inputText id="descripcion1" value="#{cursoBean.curso.costo}"  required="true" requiredMessage="Debe ingresar la descripcion"/>
+                        <p:outputLabel for="descripcion2" value="Horas de duracion: " />
+                        <p:inputText id="descripcion2" value="#{cursoBean.curso.horasDuracion}"  required="true" requiredMessage="Debe ingresar la descripcion"/>
+                        <p:outputLabel for="tipo" value="tipo" />
                         <h:selectOneMenu value="#{cursoBean.curso.estado}" style="background-color: black" >
-                            <f:selectItems id="tipos" value="#{cursoBean.tiposCursos}" var="tiposCursos" itemValue="#{tiposCursos}" itemLabel="#{tiposCursos.texto}"  />                          
+                            <f:selectItems id="tipo" value="#{cursoBean.tiposCursos}" var="tiposCurso" itemValue="#{tiposCurso}" itemLabel="#{tiposCurso.texto}"  />
                         </h:selectOneMenu>
                     </p:panelGrid>
-                    <p:commandButton value="Aceptar" actionListener="#{areaBean.guardar()}" update="@form" />
-                    <p:commandButton value="Cancelar" actionListener="#{areaBean.cancelar()}" update="@form" immediate="true"/>
+                    <p:commandButton value="Aceptar" actionListener="#{cursoBean.guardar()}" update="@form" />
+                    <p:commandButton value="Cancelar" actionListener="#{cursoBean.cancelar()}" update="@form" immediate="true"/>
                 </p:panel>
-                </p:panel>
-           <h:form>  
-    
-</h:form>
+            </p:panel>
         </ui:define>
     </ui:composition>
 </html>
-

@@ -42,9 +42,9 @@
                         <p:inputText id="direccion" value="#{clienteBean.cliente.direccion}"/>
                         <p:outputLabel for="correo" value="Correo" />
                         <p:inputText id="correo" value="#{clienteBean.cliente.correo}"/>
-                        <p:outputLabel for="estado" value="Estado" />
+                        <p:outputLabel value="Estado" />
                         <h:selectOneMenu value="#{clienteBean.cliente.estado}" style="background-color: black" >
-                            <f:selectItems id="estado" value="#{areaBean.tiposArea}" var="tiposArea" itemValue="#{tiposArea}" itemLabel="#{tiposArea.texto}"  />                          
+                            <f:selectItems id="tipo" value="#{clienteBean.tiposCliente}" var="tiposCliente" itemValue="#{tiposCliente}" itemLabel="#{tiposCliente.texto}"/>                          
                         </h:selectOneMenu>
                     </p:panelGrid>
                     <p:commandButton value="Aceptar" actionListener="#{clienteBean.guardar()}" update="@form" />

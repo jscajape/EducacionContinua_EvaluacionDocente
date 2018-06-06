@@ -24,11 +24,8 @@
                     <p:growl id="messages"/>
                     <p:menubar>
                         <p:menuitem value="Alumno" action="alumnoDatos"/>
-                        <p:submenu label="Facturacion">                           
-                        </p:submenu>  
-                        <p:submenu label="Evaluacion Docente" >
-                            <p:menuitem value="Realizar Evalacion" action="tipoEvaluacionDocente" />
-                        </p:submenu>
+                        <p:menuitem value="Matricula" action="Matricula" />
+                        <p:menuitem value="Realizar Evaluacion Docente" action="tipoEvaluacionDocente" />
                         <p:menuitem value="#{usuarioSesionBean.nombre}" url="#" style="margin-right:10px"/>
                         <p:menuitem value="Salir" icon="ui-icon-extlink" action="#{indexBean.logout()}" />
                     </p:menubar>

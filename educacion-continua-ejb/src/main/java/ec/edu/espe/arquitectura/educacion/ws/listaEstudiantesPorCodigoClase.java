@@ -38,11 +38,12 @@ public class listaEstudiantesPorCodigoClase {
     public List<InsPersonaWS> matriculaPorCodifo(String codClase) {
         List<InsMatricula> matriculasTodas = this.obtenerTodos();
         List<InsPersonaWS> listadoAlumnos = new ArrayList<>();
-        InsPersonaWS personaWS = new InsPersonaWS();
+        
         
 
         for (InsMatricula obj : matriculasTodas) 
         {
+            InsPersonaWS personaWS = new InsPersonaWS();
             if (obj.getInsClase().getCodigo().getCodClase().compareTo(codClase) == 0)
             {
                 SegUsuario usuarioDocente = new SegUsuario();

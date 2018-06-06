@@ -42,4 +42,11 @@ public class ClienteService {
         InsCliente cliente = this.clienteFacade.find(codigo);
         this.clienteFacade.remove(cliente);
     }
+    
+    public InsCliente buscarCliente (String documento){
+        InsCliente cliente = this.clienteFacade.PorCliente(documento).get(0);
+        return cliente;
+    }
+    
+   
 }

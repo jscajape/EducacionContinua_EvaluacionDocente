@@ -25,4 +25,7 @@ public class AulaService {
         return this.aulaFacade.findAll();
     }
 
+    public InsAula buscar(String cod){
+        return this.aulaFacade.find(cod);
+    }
 }

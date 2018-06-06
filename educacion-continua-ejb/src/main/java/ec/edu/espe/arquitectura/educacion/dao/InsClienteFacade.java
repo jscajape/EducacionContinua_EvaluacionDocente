@@ -6,9 +6,11 @@
 package ec.edu.espe.arquitectura.educacion.dao;
 
 import ec.edu.espe.arquitectura.educacion.model.InsCliente;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -28,5 +30,10 @@ public class InsClienteFacade extends AbstractFacade<InsCliente> {
     public InsClienteFacade() {
         super(InsCliente.class);
     }
-    
+
+    public List<InsCliente> PorCliente(String numdocumento) {
+        Query qry = this.em.createQuery("SELECT obj FROM InsCliente obj WHERE obj.numDocumento =?1");
+        qry.setParameter(1, numdocumento);
+        return qry.getResultList();
+    }
 }

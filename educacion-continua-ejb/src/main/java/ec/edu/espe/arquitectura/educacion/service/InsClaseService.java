@@ -35,5 +35,7 @@ public class InsClaseService {
     public List<InsClase> obtenerClasesMatricula(String codEstudiante) {
         return this.claseFacade.buscarPorEstudiante(codEstudiante);
     }
-    
+     public List<InsClase> obtenerClasesArea(Integer codigoArea) {
+        return this.claseFacade.buscarPorArea(codigoArea);
+    }
 }

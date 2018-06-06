@@ -23,26 +23,20 @@
                 <h:form>
                     <p:growl id="messages"/>
                     <p:menubar>
-                        <p:submenu  label="Area" >    
-                            <p:menuitem >
-                                <p:dataTable var="area" value="#{areaBean.insAreas}" 
-                                             selectionMode="single" selection="#{areaBean.insAreaSel}" rowKey="#{area.codigo}">
-                                    <p:ajax event="rowDblselect"/>
-                                    <p:ajax event="rowUnselect" update="@form" />
-                                    <p:column>
-                                        <h:outputText value="#{area.descripcion}" />
-                                    </p:column>     
-                                </p:dataTable>
-                            </p:menuitem>                  
-                            <p:menuitem value="Configurar" action="Area"/> 
-                        </p:submenu>
-                        <p:submenu label="Cursos">   
+                        <p:submenu  label="Administracion de Clases" >    
+                            <p:menuitem value="Area" action="Area"/> 
+                            <p:menuitem value="Clase" action="Clase" />
                             <p:menuitem value="Cursos" action="Curso" />
+                            <p:menuitem value="Horario" action="Horario" />
                         </p:submenu>
                         <p:menuitem value="Personas" action="persona"/>
                         <p:submenu label="Usuarios" >
                             <p:menuitem value="Crear usuarios" action="UsuarioAdmin" />
                         </p:submenu>
+                        <p:submenu label="Facturacion">       
+                            <p:menuitem value="Buscar Factura" action="listaFacturas"/>
+                            <p:menuitem value="Facturar" action="factura"/>
+                        </p:submenu>  
                         <p:menuitem value="#{usuarioSesionBean.nombre}" url="#"/>
                         <p:menuitem value="Salir" icon="ui-icon-extlink" action="#{indexBean.logout()}" />
                     </p:menubar>

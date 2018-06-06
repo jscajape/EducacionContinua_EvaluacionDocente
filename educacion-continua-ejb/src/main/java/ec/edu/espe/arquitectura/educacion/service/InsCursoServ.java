@@ -5,7 +5,9 @@
  */
 package ec.edu.espe.arquitectura.educacion.service;
 
+import ec.edu.espe.arquitectura.educacion.dao.InsClaseFacade;
 import ec.edu.espe.arquitectura.educacion.dao.InsCursoFacade;
+import ec.edu.espe.arquitectura.educacion.model.InsClase;
 import ec.edu.espe.arquitectura.educacion.model.InsCurso;
 import java.util.List;
 import javax.ejb.EJB;
@@ -25,6 +27,9 @@ public class InsCursoServ {
     public List<InsCurso> obtenerTodos(){
         return this.cursofacade.findAll();
     }
+    public List<InsCurso> buscarporArea(Integer codArea){
+        return this.cursofacade.buscarPorArea(codArea);
+    }
     public void crear(InsCurso curso)
     {
        this.cursofacade.create(curso);
@@ -35,4 +40,5 @@ public class InsCursoServ {
     public void eliminar(InsCurso curso){
         this.cursofacade.remove(curso);
     }
+ 
 }
