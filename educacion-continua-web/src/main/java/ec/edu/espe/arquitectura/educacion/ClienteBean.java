@@ -197,6 +197,9 @@ public class ClienteBean extends BaseBean implements Serializable {
 
             });
             this.matriculas = new ArrayList<>();
+            this.total=0;
+            this.subtotal=0;
+            this.iva=0;
             super.reset();
 
             FacesUtil.addMessageInfo("Se agregó la factura: " + this.insfactura.getCodigo());
