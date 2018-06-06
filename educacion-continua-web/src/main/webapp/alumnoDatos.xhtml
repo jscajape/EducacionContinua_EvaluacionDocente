@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//ES" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <ui:composition template="/templates/plantillaUsuario.xhtml">
+        <ui:define name="contenido">
+            <p:panel header="Datos Alumno">
+                <p:panelGrid columns="2">
+                    <p:panelGrid columns="3">
+                        <p:outputLabel for="codigo" value="Identificaci&#243;n" />
+                        <p:inputText id="codigo" value="#{alumnoDatosBean.codigoUsuario}" disabled="true" required="true" requiredMessage="Debe ingresar el codigo"/>
+                        <p:message for="codigo" />
+                        <p:outputLabel for="nombre" value="Nombre: " />
+                        <p:inputText id="nombre" value="#{alumnoDatosBean.insPersona.nombre}"  required="true" requiredMessage="Debe ingresara la descripcion"/>
+                        <p:message for="nombre" />
+                        <p:outputLabel for="apellido" value="Apellido: " />
+                        <p:inputText id="apellido" value="#{alumnoDatosBean.insPersona.apellido}"  required="true" requiredMessage="Debe ingresara la descripcion"/>
+                        <p:message for="apellido" />
+                        <p:outputLabel for="correo" value="Correo Electronico" />
+                        <p:inputText id="correo" value="#{alumnoDatosBean.segUsuario.correoElectronico}"  required="true" requiredMessage="Debe ingresara la descripcion"/>
+                        <p:message for="correo" />
+                    </p:panelGrid>
+                    <p:panelGrid columns="3">
+                        <p:outputLabel for="direccion" value="Direcci&#243;n" />
+                        <p:inputText id="direccion" value="#{alumnoDatosBean.insPersona.direccion}"  required="true" requiredMessage="Debe ingresara la descripcion"/>
+                        <p:message for="direccion" />
+                        <p:outputLabel for="telefono" value="Tel&#233;fono" />
+                        <p:inputText id="telefono" value="#{alumnoDatosBean.insPersona.telefono}"  required="true" requiredMessage="Debe ingresara la descripcion"/>
+                        <p:message for="telefono"/>
+                        <p:outputLabel for="fechaNacimiento" value="Fecha Nacimiento" />
+                        <p:calendar id="fechaNacimiento" value="#{alumnoDatosBean.insPersona.fecNac}" required="true" requiredMessage="Debe ingresara la fecha de nacimiento" showOn="button" pattern="MM/dd/yyyy"/>
+                        <p:message for="fechaNacimiento" />
+                    </p:panelGrid>
+                </p:panelGrid>
+                <p:commandButton value="Actualizar datos" actionListener="#{alumnoDatosBean.guardar}" update="@form"/>
+            </p:panel>
+        </ui:define>
+    </ui:composition>
+</html>
