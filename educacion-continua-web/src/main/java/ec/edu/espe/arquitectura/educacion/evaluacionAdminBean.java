@@ -267,7 +267,7 @@ public class evaluacionAdminBean implements Serializable {
         BigDecimal bd = BigDecimal.valueOf((double) sum);
 
         evaRespCuest.setCalificacionPromedio(bd);
-        
+        evaRespCuest.getInsClase().setInsCurso(cursoDeClaseSeleccionada);
         this.respuestaCuestionarioService.guardar(evaRespCuest);
         this.cuestionarioBand = false; 
     }
